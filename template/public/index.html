@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Node on Train: Welcome aboard</title>
+	<style type="text/css" media="screen">
+		body {
+			margin: 0;
+			margin-bottom: 25px;
+			padding: 0;
+			background-color: #46483e;
+			font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+			font-size: 14px;
+			color: #333;
+		}
+		h1 {
+			font-size: 29px;
+			color: #000;
+		}
+		a {
+			color: #690;
+			text-decoration: none;
+		}
+		a:hover {
+			text-decoration: underline;
+		}
+		#page {
+			background-color: white;
+			width: 750px;
+			margin: 0;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#content {
+			float: right;
+			background-color: white;
+			padding: 25px;
+			width: 500px;
+			border: 5px solid #8cc84b;
+			border-top: none;
+		}
+		#sidebar {
+			float: left;
+			width: 175px;
+		}
+		#about, #getting-started {
+			padding-left: 75px;
+			padding-right: 30px;
+		}
+		#header {
+			padding-left: 20px;
+			margin-bottom: 60px;
+		}		
+		#header img {
+			float: left;
+			margin-right: 20px;
+		}
+		#header h1, #header h2 {
+			margin: 0;
+		}
+		#header h2 {
+			color: #888;
+			font-weight: normal;
+			font-size: 17px;
+		}
+		#about h3 {
+			margin: 0;
+			margin-bottom: 10px;
+			font-size: 15px;
+		}
+		#about-content {
+			background-color: #ffd;
+			border: 1px solid #AEC516;
+			margin-left: -55px;
+			margin-right: -10px;
+		}
+		#about-content table {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font-size: 12px;
+			border-collapse: collapse;
+		}
+		#about-content td {
+			padding: 10px;
+			padding-top: 3px;
+			padding-bottom: 3px;
+		}
+		#about-content td.name  {color: #555}
+		#about-content td.value {color: #000}
+		#getting-started {
+			border-top: 1px solid #ccc;
+			margin-top: 25px;
+			padding-top: 15px;
+		}
+		#getting-started h1 {
+			margin: 0;
+			font-size: 21px;
+		}
+		#getting-started h2 {
+			margin: 0;
+			font-size: 15px;
+			font-weight: normal;
+			color: #333;
+			margin-bottom: 25px;
+		}
+		#getting-started ol {
+			margin-left: 0;
+			padding-left: 0;
+		}
+		#getting-started li {
+			font-size: 19px;
+			color: #888;
+			margin-bottom: 25px;
+		}
+		#getting-started li h2 {
+			margin: 0;
+			font-weight: normal;
+			font-size: 19px;
+			color: #333;
+		}
+		#getting-started li p {
+			color: #555;
+			font-size: 14px;
+		}
+		#sidebar ul {
+			margin-left: 0;
+			padding-left: 0;
+		}
+		#sidebar ul h3 {
+			color: white;
+			margin-top: 25px;
+			font-size: 17px;
+			padding-bottom: 10px;
+		}
+		#sidebar li {
+			list-style-type: none;
+		}
+		#sidebar ul.links li {
+			border-top: 1px solid #626557;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		.filename {
+			font-style: italic;
+		}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<div id="sidebar">
+			<ul id="sidebar-items">
+				<li>
+					<h3>Browse the documentation</h3>
+					<ul class="links">
+						<li><a href="#">Train Tutorial</a></li>
+						<li><a href="#">Train API</a></li>
+						<li><a href="http://livescript.net">LiveScript</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div id="content">
+			<div id="header">
+				<img src="assets/trainjs.png" alt="trainjs" />
+				<h1>Welcome aboard</h1>
+				<h2>You&rsquo;re riding Node on Train!</h2>
+			</div>
+			<div id="about">
+				<h3>About your application&rsquo;s environment</h3>
+				<div id="about-content">
+					<table>
+						<tbody>
+							<tr>
+								<td class="name">Train Version</td>
+								<td class="value">%%trainjs_version%%</td>
+							</tr>
+							<tr>
+								<td class="name">Node Version</td>
+								<td class="value">%%node_version%%</td>
+							</tr>
+							<tr>
+								<td class="name">LiveScript Version</td>
+								<td class="value">%%livescript_version%%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="getting-started">
+				<h1>Getting started</h1>
+				<h2>Here&rsquo;s how to get rolling:</h2>
+				<ol>
+					<li>
+						<h2>Use <code>trainjs generate</code> to create your models and controllers</h2>
+						<p>To see all available options, run it without parameters.</p>
+					</li>
+					<li>
+						<h2>Set up a default route and remove <span class="filename">public/index.html</span></h2>
+						<p>Routes are set up in <span class="filename">config/routes.ls</span>.</p>
+					</li>
+				</ol>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

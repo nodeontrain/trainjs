@@ -1,0 +1,3 @@
+class ApplicationController extends ActionController
+
+global.ApplicationController = ApplicationController
