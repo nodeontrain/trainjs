@@ -20,18 +20,15 @@
 */
 
 
-var mkdirp = require('mkdirp');
 var fs = require('fs');
 var path = require('path');
+var colors = require('colors');
+var diff = require('diff');
+var jroad = require('jroad');
+var readline = require('readline');
 
-var app_dirs = new Array();
-app_dirs['app_root'] = 'README.md';
-app_dirs['app/assets/javascripts'] = 'application.js';
-app_dirs['app/assets/images'] = 'trainjs.png';
-app_dirs['app/views/layouts'] = 'application.ejs';
-app_dirs['app/controllers'] = 'application_controller.ls';
-app_dirs['config'] = 'application.ls database.ls routes.ls';
-app_dirs['public'] = 'index.html favicon.ico';
+var root_app, params, path_templ, lines;
+var overwrite_all = false;
 
 function jtrain_toTitleCase (str) {
     return str.replace(/\w\S*/g, function(txt) {
@@ -39,83 +36,127 @@ function jtrain_toTitleCase (str) {
     });
 }
 
-function copy_image(file_log, src_file, des_file) {
-	var inStr = fs.createReadStream(src_file);
-	var outStr = fs.createWriteStream(des_file);
-	inStr.pipe(outStr);
-	console.log('      create  ' + file_log);
+function create_file (src_content, des, file_name, message) {
+	var write_result = fs.writeFileSync(des, src_content);
+	if (typeof write_result == 'undefined')
+		console.log(message + file_name);
+	else
+		console.log(write_result);
 }
 
-function generate_file(info_render, file_log, src_file, des_file) {	
-	fs.readFile(src_file, function (errRead, data) {
-		if (errRead) throw errRead;
-
-		data = data.toString();
-		for(var k in info_render) {
-			var reg = new RegExp("%%" + k + "%%", "g");		
-			data = data.replace(reg, info_render[k]);
-		}
-
-		fs.writeFile(des_file, data, function (errWrite) {
-			if (errWrite) throw errWrite;
-			console.log('      create  ' + file_log);
-		});
-	});
-}
-
-function generate_dirs(params, path_templ, path_des) {
-	var src = path_templ;
-	var des = './' + params.app_name;
-	if(path_des != 'app_root') {
-		des = des + '/' + path_des;
-		src = src + path_des;
-	}
-
-	if(typeof app_dirs[path_des] != 'undefined')
-		var files = app_dirs[path_des].split(" ");
-
-	var info_render = {};
-
-	mkdirp(des, function (err) {
-		if (err) console.error(err)
-		else {
-			if(typeof files != 'undefined') {
-				for (var i = 0; i < files.length; i++) {
-					var des_file = des + '/' + files[i];
-					var src_file = src + '/' + files[i];
-					if(path_des == 'app_root')
-						var file_log = files[i];
-					else
-						var file_log = path_des + '/' + files[i];
-					if(files[i] == 'trainjs.png' || files[i] == 'favicon.ico') {
-						copy_image(file_log, src_file, des_file);
+function create_app (order) {
+	for (var i = order; i < lines.length; i++) {
+		var line = lines[i].split(" " + path_templ + "/");
+		var des = root_app + "/" + line[1];
+		var src = path_templ + "/" + line[1];
+		if (line[0] == "d") {
+			if (fs.existsSync(des)) console.log('       exist  '.bold.blue + line[1]);
+			else {
+				fs.mkdirSync(des);
+				console.log('      create  '.bold.green + line[1]);
+			}
+		} else {
+			if (line[1] == 'app/assets/images/trainjs.png' ||
+				line[1] == 'public/favicon.ico') {
+				var inStr = fs.createReadStream(src);
+				var outStr = fs.createWriteStream(des);
+				inStr.pipe(outStr);
+				console.log('      create  '.bold.green + line[1]);
+			} else {
+				var info_render = {};
+				if(line[1] == 'app/views/layouts/application.ejs')
+					info_render.title = jtrain_toTitleCase(params.app_name);
+				else if(line[1] == 'config/database.ls')
+					info_render.db_name = params.app_name.toLowerCase();
+				else if(line[1] == 'public/index.html')
+					info_render = params;
+					
+				var src_content = fs.readFileSync(src).toString();
+				for (var k in info_render) {
+					var reg = new RegExp("%%" + k + "%%", "g");		
+					src_content = src_content.replace(reg, info_render[k]);
+				}
+				
+				if (typeof src_content != 'undefined') {
+					if (fs.existsSync(des)) {
+						var des_content = fs.readFileSync(des).toString();
+						if (src_content == des_content) {
+							console.log('   identical  '.bold.blue + line[1]);
+						} else if (src_content != des_content && overwrite_all == true) {
+							console.log('    conflict  '.bold.red + line[1])
+							var message = '       force  '.bold.yellow;
+							create_file(src_content, des, line[1], message);
+						} else if (src_content != des_content && overwrite_all == false) {
+							order = i + 1;
+							console.log('    conflict  '.bold.red + line[1])
+							console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
+							conflict(order, src_content, des_content, des, line[1]);
+							break;
+						}
 					} else {
-						if(files[i] == 'application.ejs')
-							info_render.title = jtrain_toTitleCase(params.app_name);
-						else if(files[i] == 'database.ls')
-							info_render.db_name = params.app_name.toLowerCase();
-						else if(files[i] == 'index.html')
-							info_render = params;
-
-						generate_file(info_render, file_log, src_file, des_file);
+						var message = '      create  '.bold.green;
+						create_file (src_content, des, line[1], message);
 					}
 				}
+
 			}
+		}
+	}
+}
+
+function conflict (order, src_content, des_content, des, file_name) {
+	var rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout
+	});
+	rl.on('line', function (key) {
+		if (key == "h") {
+			console.log('Y - yes, overwrite');
+			console.log('n - no, do not overwrite');
+			console.log('a - all, overwrite this and all others');
+			console.log('q - quit, abort');
+			console.log('d - diff, show the differences between the old and the new');
+			console.log('h - help, show this help');
+		} else if (key == "y" || key == "Y") {
+			var message = '       force  '.bold.yellow;
+			create_file(src_content, des, file_name, message);
+			create_app(order);
+			rl.close();
+		} else if (key == "n") {
+			var message = '        skip  '.bold.yellow + file_name;
+			console.log(message);
+			create_app (order);
+			rl.close();
+		} else if (key == "a") {
+			overwrite_all = true;
+			var message = '       force  '.bold.yellow;
+			create_file(src_content, des, file_name, message);
+			create_app(order);
+			rl.close();
+		} else if (key == "q") {
+			console.log('Aborting...');
+			rl.close();
+		} else if (key == "d") {
+			var diff_result = diff.createPatch(des, des_content, src_content);
+			console.log(diff_result);
+			console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
 		}
 	});
 }
 
-module.exports = function(params) {
+module.exports = function(info_param) {
+	params = info_param;
 	params.app_name = process.argv[3];
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
-	var path_templ = lib + 'template/';
+	path_templ = lib + 'template';
 	
-	generate_dirs(params, path_templ, 'app_root');
-	generate_dirs(params, path_templ, 'app/assets/images');
-	generate_dirs(params, path_templ, 'app/assets/javascripts');
-	generate_dirs(params, path_templ, 'app/views/layouts');
-	generate_dirs(params, path_templ, 'app/models');
-	generate_dirs(params, path_templ, 'app/controllers');
-	generate_dirs(params, path_templ, 'config');
-	generate_dirs(params, path_templ, 'public');
+	root_app = './' + params.app_name;
+	if (fs.existsSync(root_app)) console.log('       exist  '.bold.blue);
+	else {
+		fs.mkdirSync(root_app);
+		console.log('      create  '.bold.green);
+	}
+
+	lines = jroad.list_files(path_templ);
+	create_app (0);
 }

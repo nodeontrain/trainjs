@@ -23,26 +23,24 @@
 var path = require('path');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
-var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 
 module.exports = function (port) {
 	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.ls';
-	var command = lib + 'node_modules/LiveScript/bin/lsc';
-	var ls = spawn(command, [path_server_ls, port]);
+	var lsc = spawn('lsc', [path_server_ls, port]);
 
-	ls.stdout.on('data', function (data) {
+	lsc.stdout.on('data', function (data) {
 		var outdata = "";
 		outdata += data;
 		console.log(outdata);
 	});
 
-	ls.stderr.on('data', function (data) {
+	lsc.stderr.on('data', function (data) {
 		var errdata = "";
 		errdata += data;
 		console.log(errdata);
 	});
 
-	ls.on('exit', function (code) {
+	lsc.on('exit', function (code) {
 		console.log(code);
 	});
 }
