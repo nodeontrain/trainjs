@@ -1,20 +1,21 @@
 {
   "name": "trainjs",
   "description": "Web framework",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
   "bin" : {
     "trainjs" : "./bin/train_command.js"
   },
   "dependencies": {
-    "LiveScript": "1.1.1",
-    "mkdirp": "~0.3.4",
     "mongoose": "3.6.4",
     "ejs": "0.8.3",
     "fibrous": "0.3.0",
-    "jroad": "*"
+    "jroad": "*",
+    "colors": "*",
+    "diff": "*"
   },
   "devDependencies": {
+    "LiveScript": "1.1.1",
     "mocha": "*",
     "jspec": "*"
   },
