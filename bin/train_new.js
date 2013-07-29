@@ -121,7 +121,7 @@ function create_app () {
 	if (count == lines.length) {
 		rl.close();
 		console.log('         run  '.bold.green + 'npm install');
-		child_process.exec('cd myapp '+ params.app_name +' && npm install',
+		child_process.exec('cd '+ params.app_name +' && npm install',
 			function (error, stdout, stderr) {
 				console.log('' + stdout);
 				console.log('' + stderr);
