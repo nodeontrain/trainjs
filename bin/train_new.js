@@ -26,9 +26,9 @@ var colors = require('colors');
 var diff = require('diff');
 var jroad = require('jroad');
 var readline = require('readline');
+var child_process = require('child_process');
 
-var root_app, params, path_templ, lines, file_type;
-var src_content, outStr;
+var root_app, params, path_templ, lines, file_type, src_content, outStr;
 var count = 0;
 var order = 0;
 var question = false;
@@ -118,8 +118,19 @@ function create_app () {
 			}
 		}
 	}
-	if (count == lines.length)
+	if (count == lines.length) {
 		rl.close();
+		console.log('         run  '.bold.green + 'npm install');
+		child_process.exec('cd myapp '+ params.app_name +' && npm install',
+			function (error, stdout, stderr) {
+				console.log('' + stdout);
+				console.log('' + stderr);
+				if (error !== null) {
+					console.log('' + error);
+				}
+			}
+		);
+	}
 }
 
 var rl = readline.createInterface({
