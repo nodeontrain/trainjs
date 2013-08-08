@@ -8,16 +8,16 @@
   },
   "dependencies": {
     "mongoose": "3.6.4",
-    "ejs": "0.8.3",
     "fibrous": "0.3.0",
-    "jroad": "*",
+    "jroad": "0.0.4",
     "colors": "*",
     "diff": "*"
   },
   "devDependencies": {
     "LiveScript": "1.1.1",
+    "ejs": "*",
     "mocha": "*",
-    "jspec": "*"
+    "jspec": "0.0.5"
   },
   "repository": {
     "type": "git",

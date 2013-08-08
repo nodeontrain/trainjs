@@ -1,1 +1,1 @@
-Application.routes.draw ->
+Application.routes.draw do !->
