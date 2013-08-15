@@ -24,6 +24,7 @@ To run the tests:
 ```shell
 	npm test
 ```
+
 ## License
 Copyright (C) 2013 by Đặng Duy Thanh
 

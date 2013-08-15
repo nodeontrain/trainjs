@@ -9,12 +9,12 @@
   "dependencies": {
     "mongoose": "3.6.4",
     "fibrous": "0.3.0",
-    "jroad": "0.0.4",
+    "jroad": "0.0.5",
     "colors": "*",
     "diff": "*"
   },
   "devDependencies": {
-    "LiveScript": "1.1.1",
+    "LiveScript": "1.2.0",
     "ejs": "*",
     "mocha": "*",
     "jspec": "0.0.5"

@@ -20,15 +20,12 @@
 */
 
 
-require! fibrous
+require! fs
 
-syncFunc = fibrous !->
-	require! trainjs
-	require! http
+timestamps = process.argv[2]
 
-	server = http.createServer trainjs.newServer
-	server.listen process.argv[2], '127.0.0.1'
+sleep = new Date().getTime() + 1000
+while new Date().getTime() <= sleep
+	;
 
-	console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
-
-syncFunc ->
+fs.unlinkSync __dirname + '/' + timestamps
