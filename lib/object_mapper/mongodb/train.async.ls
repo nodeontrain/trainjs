@@ -23,7 +23,7 @@
 require! fs
 require! mongoose
 
-timestamps = process.argv[2]
+file_tmp = process.argv[2]
 filename = process.argv[3]
 root_app = process.argv[4]
 db_config = process.argv[5]
@@ -33,7 +33,7 @@ query = process.argv[7]
 options = process.argv[8]
 global.App = module.exports
 
-if query != "find" && query != 'findByid'
+if query != "all" && query != 'findByid'
 	options = JSON.parse(options)
 
 mongoose.connect('mongodb://' + db_config.development.host + '/' + db_config.development.name)
@@ -45,19 +45,19 @@ require(root_app + '/app/models/' + filename)
 objectSchema = new mongoose.Schema(App[modelName].fields)
 modelObj = mongoose.model(modelName, objectSchema)
 
-if query == "find"
+if query == "all"
 	modelObj.find (err, collections) !->
 		if err
 			console.log err
 		str = JSON.stringify(collections)
-		fs.writeFileSync(__dirname + '/' + timestamps, str)
+		fs.writeFileSync(file_tmp, str)
 		process.kill process.pid
 else if query == "findByid"
-	modelObj.findById options, (err, collections) !->
+	modelObj.findById options, (err, collection) !->
 		if err
 			console.log err
-		str = JSON.stringify(collections)
-		fs.writeFileSync(__dirname + '/' + timestamps, str)
+		str = JSON.stringify(collection)
+		fs.writeFileSync(file_tmp, str)
 		process.kill process.pid
 else if query == "save"
 	collection = new modelObj(options)
@@ -66,5 +66,16 @@ else if query == "save"
 			console.log err
 		else
 			str = 'true'
-		fs.writeFileSync(__dirname + '/' + timestamps, str)
+		fs.writeFileSync(file_tmp, str)
 		process.kill process.pid
+else if query == "update"
+	modelObj.findById options.id, (err, collection) !->
+		if err
+			console.log err
+		collection.update options.data, (err) !->
+			if err
+				console.log err
+			else
+				str = 'true'
+			fs.writeFileSync(file_tmp, str)
+			process.kill process.pid

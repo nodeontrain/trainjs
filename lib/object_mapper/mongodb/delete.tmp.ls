@@ -22,10 +22,11 @@
 
 require! fs
 
-timestamps = process.argv[2]
+file_tmp = process.argv[2]
 
 sleep = new Date().getTime() + 1000
 while new Date().getTime() <= sleep
 	;
 
-fs.unlinkSync __dirname + '/' + timestamps
+fs.unlinkSync file_tmp
+process.kill process.pid
