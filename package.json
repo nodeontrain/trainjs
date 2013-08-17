@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "mongoose": "3.6.4",
-    "fibrous": "0.3.0",
+    "fibers": "1.0.1",
     "jroad": "0.0.5",
     "colors": "*",
     "diff": "*"

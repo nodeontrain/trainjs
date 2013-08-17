@@ -24,8 +24,8 @@
 
 var path = require('path');
 var fs = require('fs');
-var fibrous = require('fibrous');
 var child_process = require('child_process');
+var Fiber = require('fibers');
 
 var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 var info_param = {};
@@ -36,7 +36,16 @@ var trainjs_new_command = require('./train_new.js');
 function checkinfo () {
 	info_param.trainjs_version = require(lib + 'package.json').version;
 	info_param.node_version = process.version.substr(1);
-	var str_lsc_ver = child_process.sync.exec('lsc -v');
+
+	var fiber = Fiber.current;
+	child_process.exec('lsc -v', function (error, stdout, stderr) {
+		fiber.run(stdout);
+		console.log(stderr);
+		if (error !== null) {
+			console.log(error);
+		}
+	});
+	var str_lsc_ver = Fiber.yield();
 	var num_ver_str = str_lsc_ver.split(" ")[1].split("\n");
 	info_param.livescript_version = num_ver_str[0];
 }
@@ -46,7 +55,7 @@ function isNormalInteger(str) {
     return String(n) === str && n >= 0;
 }
 
-var trainjs_command = fibrous(function(){
+Fiber(function() {
 	checkinfo();
 	if (process.argv[2] == "server" || process.argv[2] == "s") {
 		if (process.argv[3] && process.argv[3] == "-p" && process.argv[4]) {
@@ -68,5 +77,4 @@ var trainjs_command = fibrous(function(){
 	} else if (process.argv[2] == "-v" || process.argv[2] == "--version") {
 		console.log("trainjs " + info_param.trainjs_version);
 	}
-});
-trainjs_command(function(){});
+}).run();
