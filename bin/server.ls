@@ -20,15 +20,8 @@
 */
 
 
-require! fibrous
-
-syncFunc = fibrous !->
-	require! trainjs
-	require! http
-
-	server = http.createServer trainjs.newServer
-	server.listen process.argv[2], '127.0.0.1'
-
-	console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
-
-syncFunc ->
+require! trainjs
+require! http
+server = http.createServer trainjs.newServer
+server.listen process.argv[2], '127.0.0.1'
+console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
