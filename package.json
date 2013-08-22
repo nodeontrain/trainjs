@@ -11,7 +11,8 @@
     "fibers": "1.0.1",
     "jroad": "0.0.5",
     "colors": "*",
-    "diff": "*"
+    "diff": "*",
+    "inflection": "*"
   },
   "devDependencies": {
     "LiveScript": "1.2.0",
