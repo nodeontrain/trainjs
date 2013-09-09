@@ -9,7 +9,7 @@
   "dependencies": {
     "mongoose": "3.6.4",
     "fibers": "1.0.1",
-    "jroad": "0.0.6",
+    "jroad": "0.0.8",
     "colors": "*",
     "diff": "*",
     "inflection": "*"
