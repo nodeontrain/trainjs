@@ -22,7 +22,7 @@ Before you run tests, you may need to first install mocha module and jspec modul
 ```
 To run the tests:
 ```shell
-	npm test
+	mocha
 ```
 
 ## License

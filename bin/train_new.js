@@ -56,6 +56,20 @@ function create_file (src, des, file_name, message) {
 	}
 }
 
+function npm_install() {
+	rl.close();
+	console.log('         run  '.bold.green + 'npm install');
+	child_process.exec('cd '+ params.app_name +' && npm install',
+		function (error, stdout, stderr) {
+			console.log('' + stdout);
+			console.log('' + stderr);
+			if (error !== null) {
+				console.log('' + error);
+			}
+		}
+	);
+}
+
 function create_app () {
 	for (var i = order; i < lines.length; i++) {
 		count++;
@@ -92,6 +106,7 @@ function create_app () {
 			}
 
 			if (fs.existsSync(des)) {
+				question = false;
 				if (file_type == "text")
 					var des_content = fs.readFileSync(des).toString();
 				else {
@@ -118,19 +133,8 @@ function create_app () {
 			}
 		}
 	}
-	if (count == lines.length) {
-		rl.close();
-		console.log('         run  '.bold.green + 'npm install');
-		child_process.exec('cd '+ params.app_name +' && npm install',
-			function (error, stdout, stderr) {
-				console.log('' + stdout);
-				console.log('' + stderr);
-				if (error !== null) {
-					console.log('' + error);
-				}
-			}
-		);
-	}
+	if (count == lines.length && question == false)
+		npm_install();
 }
 
 var rl = readline.createInterface({
@@ -154,17 +158,24 @@ rl.on('line', function (key) {
 		} else if (key == "y" || key == "Y") {
 			var message = '       force  '.bold.yellow;
 			create_file(src, des, file_name, message);
-			create_app(order);
+			create_app();
+			if (count == lines.length)
+				npm_install();
 		} else if (key == "n") {
 			var message = '        skip  '.bold.yellow + file_name;
 			console.log(message);
-			create_app (order);
+			create_app();
+			if (count == lines.length)
+				npm_install();
 		} else if (key == "a") {
 			overwrite_all = true;
 			var message = '       force  '.bold.yellow;
 			create_file(src, des, file_name, message);
-			create_app(order);
-			rl.close();
+			create_app();
+			if (count == lines.length)
+				npm_install();
+			else
+				rl.close();
 		} else if (key == "q") {
 			console.log('Aborting...');
 			rl.close();
@@ -186,7 +197,7 @@ module.exports = function(info_param) {
 	params = info_param;
 	params.app_name = process.argv[3];
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
-	path_templ = lib + 'template';
+	path_templ = lib + 'template/new_app';
 	
 	root_app = './' + params.app_name;
 	if (fs.existsSync(root_app)) console.log('       exist  '.bold.blue);

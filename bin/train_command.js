@@ -32,6 +32,7 @@ var info_param = {};
 
 var trainjs_server_command = require('./train_server.js');
 var trainjs_new_command = require('./train_new.js');
+var trainjs_scaffold_command = require('./train_scaffold.js');
 
 function checkinfo () {
 	info_param.trainjs_version = require(lib + 'package.json').version;
@@ -69,6 +70,18 @@ Fiber(function() {
 		trainjs_server_command(port);
 	} else if (process.argv[2] == "new") {
 		trainjs_new_command(info_param);
+	} else if (process.argv[2] == "generate" || process.argv[2] == "g") {
+		if (process.argv[3] == "scaffold")
+			trainjs_scaffold_command();
+	} else if (process.argv[2] == "routes") {
+		child_process.exec('lsc '+ lib +'/bin/train_routes.ls', function (error, stdout, stderr) {
+			console.log(stdout);
+			console.log(stderr);
+			if (error !== null) {
+				console.log(error);
+			}
+			process.kill('SIGTERM');
+		});
 	} else if (process.argv[2] == "-h" || process.argv[2] == "--help") {
 		fs.readFile(path.dirname(fs.realpathSync(__filename)) + '/train_help', function (err, data) {
 			if (err) throw err;
