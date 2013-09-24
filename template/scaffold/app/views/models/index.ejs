@@ -1,0 +1,19 @@
+<h1>Listing %%model_plural%%</h1>
+
+<table>
+	<tr>
+%%index_th_html%%		<th></th>
+		<th></th>
+		<th></th>
+	</tr>
+	<% %%model_plural%%.forEach(function(%%model%%){ %>
+	<tr>
+%%index_td_html%%		<td><%- link_to ( "Show", %%model%%_path(%%model%%) ) %></td>
+		<td><%- link_to ( "Edit", edit_%%model%%_path(%%model%%) ) %></td>
+		<td><%- link_to ( "Delete", %%model%%_path(%%model%%), {method: "delete", data: {confirm: "Are you sure?"}} ) %></td>
+	</tr>
+	<% }) %>
+</table>
+<br />
+
+<%- link_to ( "New %%model_name%%", new_%%model%%_path ) %>

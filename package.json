@@ -1,23 +1,25 @@
 {
   "name": "trainjs",
   "description": "Web framework",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
   "bin" : {
     "trainjs" : "./bin/train_command.js"
   },
   "dependencies": {
     "mongoose": "3.6.4",
-    "ejs": "0.8.3",
-    "fibrous": "0.3.0",
-    "jroad": "*",
+    "fibers": "1.0.1",
+    "jroad": "0.0.9",
     "colors": "*",
-    "diff": "*"
+    "diff": "*",
+    "inflection": "*",
+    "html-to-text": "*"
   },
   "devDependencies": {
-    "LiveScript": "1.1.1",
+    "LiveScript": "1.2.0",
+    "ejs": "*",
     "mocha": "*",
-    "jspec": "*"
+    "jspec": "0.0.5"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,7 @@
   "readmeFilename": "README.md",
   "gitHead": "7890dd293a7c1dff4c3c2f7b9c136f32378344ac",
   "scripts": {
-    "test": "./bin/test.sh"
+    "test": "./bin/test/test.sh"
   },
   "license": [{
       "type" : "GPL v3",
