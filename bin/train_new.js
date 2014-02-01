@@ -193,7 +193,7 @@ rl.on('line', function (key) {
 });
 
 
-module.exports = function(info_param) {
+module.exports = function (info_param) {
 	params = info_param;
 	params.app_name = process.argv[3];
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');

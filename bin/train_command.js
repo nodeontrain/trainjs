@@ -4,7 +4,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -27,15 +27,11 @@ var fs = require('fs');
 var child_process = require('child_process');
 var Fiber = require('fibers');
 
-var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
+TRAINJS_LIB_PATH = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 var info_param = {};
 
-var trainjs_server_command = require('./train_server.js');
-var trainjs_new_command = require('./train_new.js');
-var trainjs_scaffold_command = require('./train_scaffold.js');
-
 function checkinfo () {
-	info_param.trainjs_version = require(lib + 'package.json').version;
+	info_param.trainjs_version = require(TRAINJS_LIB_PATH + 'package.json').version;
 	info_param.node_version = process.version.substr(1);
 
 	var fiber = Fiber.current;
@@ -47,6 +43,10 @@ function checkinfo () {
 		}
 	});
 	var str_lsc_ver = Fiber.yield();
+    if (!str_lsc_ver) {
+        console.log('LiveScript is not installed');
+        return;
+    }
 	var num_ver_str = str_lsc_ver.split(" ")[1].split("\n");
 	info_param.livescript_version = num_ver_str[0];
 }
@@ -67,14 +67,16 @@ Fiber(function() {
 		} else {
 			var port = '1337';
 		}
-		trainjs_server_command(port);
+		require('./train_server.js')(port);
 	} else if (process.argv[2] == "new") {
-		trainjs_new_command(info_param);
+		require('./train_new.js')(info_param);
+	} else if (process.argv[2] == "lake") {
+		require('./train_lake.js')();
 	} else if (process.argv[2] == "generate" || process.argv[2] == "g") {
 		if (process.argv[3] == "scaffold")
-			trainjs_scaffold_command();
+			require('./train_scaffold.js')();
 	} else if (process.argv[2] == "routes") {
-		child_process.exec('lsc '+ lib +'/bin/train_routes.ls', function (error, stdout, stderr) {
+		child_process.exec('lsc '+ TRAINJS_LIB_PATH +'/bin/train_routes.ls', function (error, stdout, stderr) {
 			console.log(stdout);
 			console.log(stderr);
 			if (error !== null) {

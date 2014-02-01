@@ -25,10 +25,10 @@ require! fs
 require! inflection
 htmlToText = require('html-to-text')
 
-global.train_root_app = process.cwd()
+global.ROOT_APP = process.cwd()
 lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../')
 require lib + 'lib/train.application.js'
-global.Application = require train_root_app + '/config/application.ls'
+global.Application = require ROOT_APP + '/config/application.ls'
 
 routes_table = '<table id="routes">'
 
@@ -42,7 +42,7 @@ global.resources = (rsrc) !->
 	routes_table += '<tr><td></td><td>PUT</td><td>/'+rsrc+'/:id(.:format)</td><td>'+rsrc+'#update</td></tr>'
 	routes_table += '<tr><td></td><td>DELETE</td><td>/'+rsrc+'/:id(.:format)</td><td>'+rsrc+'#destroy</td></tr>'
 
-require train_root_app + '/config/routes.ls'
+require ROOT_APP + '/config/routes.ls'
 
 routes_table += '</table>'
 
