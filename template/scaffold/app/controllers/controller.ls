@@ -31,7 +31,7 @@ class App.%%controller_name%%Controller extends ApplicationController
 	# POST /%%model_plural%%
 	# POST /%%model_plural%%.json
 	create: !->
-		@%%model%% = new %%model_name%%(this.params["data"])
+		@%%model%% = %%model_name%%.new(this.params["data"])
 		if @%%model%%.save_collection() == true
 			this.respond_to do
 				format_html: redirect_to %%model%%_path(@%%model%%), notice: "%%model_name%% was successfully created."
