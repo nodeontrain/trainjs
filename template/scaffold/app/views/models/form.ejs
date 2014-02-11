@@ -1,11 +1,11 @@
 <%- form_tag(url, options) %>
-	<% if (%%model%%.errors) { %>
+	<% if (typeof error !== "undefined") { %>
 		<div id="error_explanation">
-			<h2><%= pluralize(Object.keys(%%model%%.errors).length, "error") %> prohibited this %%model%% from being saved:</h2>
+			<h2><%= pluralize(Object.keys(error).length, "error") %> prohibited this %%model%% from being saved:</h2>
 
 			<ul>
-			<% for (var k in %%model%%.errors) { %>
-				<li><%= %%model%%.errors[k]["message"] %></li>
+			<% for (var k in error) { %>
+				<li><%= error[k] %></li>
 			<% } %>
 			</ul>
 		</div>
