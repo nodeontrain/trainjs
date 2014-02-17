@@ -30,6 +30,7 @@ var Fiber = require('fibers');
 TRAINJS_LIB_PATH = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 var info_param = {};
 
+// Check trainjs, nodejs, livescript version
 function checkinfo () {
 	info_param.trainjs_version = require(TRAINJS_LIB_PATH + 'package.json').version;
 	info_param.node_version = process.version.substr(1);

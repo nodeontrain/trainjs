@@ -2,7 +2,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -34,12 +34,17 @@ var order = 0;
 var question = false;
 var overwrite_all = false;
 
+
+/**
+* Read all files in template folder.
+* if file exists, user can choose one option from the list of options
+*/
+
 function jtrain_toTitleCase (str) {
     return str.replace(/\w\S*/g, function(txt) {
     	return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
-
 function create_file (src, des, file_name, message) {
 	if (file_type == 'image') {
 		var inStr = fs.createReadStream(src);
@@ -55,8 +60,7 @@ function create_file (src, des, file_name, message) {
 			console.log(write_result);
 	}
 }
-
-function npm_install() {
+function npm_install () {
 	rl.close();
 	console.log('         run  '.bold.green + 'npm install');
 	child_process.exec('cd '+ params.app_name +' && npm install',
@@ -69,7 +73,6 @@ function npm_install() {
 		}
 	);
 }
-
 function create_app () {
 	for (var i = order; i < lines.length; i++) {
 		count++;

@@ -1,5 +1,5 @@
 Usage:
-  trainjs [trainjs options]
+  trainjs [trainjs_options]
   trainjs new APP_PATH [options]
 
 Trainjs Options:

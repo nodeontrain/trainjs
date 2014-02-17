@@ -23,6 +23,7 @@
 var child_process = require('child_process');
 
 module.exports = function () {
+	// cd into a db directory and run migrations
 	if (process.argv[3] == "db:migrate") {
 		process.chdir('db');
 		child_process.exec(TRAINJS_LIB_PATH + 'node_modules/sequelize/bin/sequelize -m', function (error, stdout, stderr) {
