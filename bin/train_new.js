@@ -195,7 +195,6 @@ rl.on('line', function (key) {
 	}
 });
 
-
 module.exports = function (info_param) {
 	params = info_param;
 	params.app_name = process.argv[3];

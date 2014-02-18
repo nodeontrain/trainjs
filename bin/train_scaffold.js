@@ -200,6 +200,10 @@ rl.on('line', function (key) {
 	}
 });
 
+/**
+* Read all files in template folder.
+* Change content and then resave it.
+*/
 module.exports = function() {
 	model_name = process.argv[4];
 	model = model_name.toLowerCase();

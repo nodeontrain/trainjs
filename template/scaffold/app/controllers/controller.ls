@@ -45,7 +45,7 @@ class App.%%controller_name%%Controller extends ApplicationController
 	# PUT /%%model_plural%%/1.json
 	update: !->
 		@%%model%% = %%model_name%%.findSync(this.params['id'])
-		if @%%model%%.update(this.params['data'])
+		if @%%model%%.updateSync(this.params['data'])
 			this.respond_to do
 				format_html: redirect_to %%model%%_path(@%%model%%), notice: "%%model_name%% was successfully updated."
 				format_json: { head: "no_content" }
