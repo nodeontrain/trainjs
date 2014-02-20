@@ -1,4 +1,4 @@
-<%- form_tag(url, options) %>
+<%- form_tag (%%model%%_path(%%model%%)) %>
 	<% if (%%model%%.errors) { %>
 		<div id="error_explanation">
 			<h2><%= pluralize(Object.keys(%%model%%.errors).length, "error") %> prohibited this %%model%% from being saved:</h2>
