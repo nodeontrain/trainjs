@@ -6,10 +6,10 @@
 module.exports =
 	development:
 		adapter: "sqlite"
-		database: "db/%%db_name%%.sqlite3"
+		database: "db/development.sqlite3"
 	test:
 		adapter: "sqlite"
-		database: "db/%%db_name%%-test.sqlite3"
+		database: "db/test.sqlite3"
 	production:
 		adapter: "sqlite"
-		database: "db/%%db_name%%-production.sqlite3"
+		database: "db/production.sqlite3"

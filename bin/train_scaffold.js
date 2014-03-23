@@ -215,7 +215,7 @@ module.exports = function() {
 		var attr_str = process.argv[i].split(':');
 
 		// model.ls
-		model_attrs += "\t\t" + attr_str[0] + ": " + attr_str[1] + "\n";
+		model_attrs += '\t\t' + attr_str[0] + ': "' + attr_str[1] + '"\n';
 
 		// form.ejs
 		form_html += '\t<div class="field">\n';
