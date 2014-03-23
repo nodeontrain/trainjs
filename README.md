@@ -26,6 +26,6 @@ To run the tests:
 ```
 
 ## License
-Copyright (C) 2013 by Đặng Duy Thanh
+Copyright (C) 2013-2014 by Đặng Duy Thanh
 
 The Node On Train is license under the terms of the GNU General Public License v3.

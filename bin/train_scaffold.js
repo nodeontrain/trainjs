@@ -2,7 +2,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -28,10 +28,12 @@ var jroad = require('jroad');
 var readline = require('readline');
 var child_process = require('child_process');
 var inflection = require('inflection');
+var moment = require(TRAINJS_LIB_PATH + 'node_modules/sequelize/node_modules/moment');
 
 var root_app, params, path_templ, lines, src_content, outStr;
-var model, model_name, controller_name, model_plural;
+var model, model_name, controller_name, model_plural, migration_file_name;
 var model_attrs = "";
+var migration_attrs = "";
 var form_html = "";
 var index_th_html = "";
 var index_td_html = "";
@@ -66,6 +68,8 @@ function check_file (line) {
 			return line_arr[0] + '/' + line_arr[1] + '/' + model_plural;
 	} else if (line_arr[2] && line_arr[2] == "model.ls") {
 		return line_arr[0] + '/' + line_arr[1] + '/' + model + '.ls';
+	} else if (line_arr[2] && line_arr[2] == "migration.js") {
+		return line_arr[0] + '/' + line_arr[1] + '/' + migration_file_name + '.js';
 	} else {
 		return line;
 	}
@@ -94,6 +98,9 @@ function generate_scaffold () {
 			} else if (line[1] == 'app/models/model.ls') {
 				info_render.model_name = model_name;
 				info_render.model_attrs = model_attrs;
+			} else if (line[1] == 'db/migrations/migration.js') {
+				info_render.model_plural = model_plural;
+				info_render.migration_attrs = migration_attrs;
 			} else if (line[1] == 'app/views/models/edit.ejs' ||
 						line[1] == 'app/views/models/new.ejs') {
 				info_render.model = model;
@@ -193,30 +200,42 @@ rl.on('line', function (key) {
 	}
 });
 
+/**
+* Read all files in template folder.
+* Change content and then resave it.
+*/
 module.exports = function() {
 	model_name = process.argv[4];
 	model = model_name.toLowerCase();
 	controller_name = inflection.pluralize(model_name);
 	model_plural = inflection.pluralize(model);
+	migration_file_name = moment().format('YYYYMMDDHHmmss') + '_create_' + model_plural;
 
 	for (var i = 5; i < process.argv.length; i++) {
 		var attr_str = process.argv[i].split(':');
-		if (attr_str[1] == "string")
-			var value = "String";
-		else if (attr_str[1] == "integer")
-			var value = "Number";
-		model_attrs += "\t\t" + attr_str[0] + ": " + value + "\n";
+
+		// model.ls
+		model_attrs += '\t\t' + attr_str[0] + ': "' + attr_str[1] + '"\n';
+
+		// form.ejs
 		form_html += '\t<div class="field">\n';
 		var attr_name = jtrain_toTitleCase(attr_str[0]);
 		form_html += '\t\t<%- label_tag ("'+ model +'_'+ attr_str[0] +'", "'+ attr_name +'") %><br />\n';
 		form_html += '\t\t<%- text_field_tag ("'+ model +'['+ attr_str[0] +']", '+ model +'.'+ attr_str[0] +') %>\n';
 		form_html += '\t</div>\n';
+
+		// index.ejs
 		index_th_html += '\t\t<th>' + attr_name + '</th>\n'
 		index_td_html += '\t\t<td><%= '+ model +'.'+ attr_str[0] +' %></td>\n';
+
+		// show.ejs
 		show_html += '<p>\n';
 		show_html += '\t<b>'+ attr_name +':</b>\n';
 		show_html += '\t<%= '+ model +'.'+ attr_str[0] +' %>\n';
 		show_html += '</p>\n';
+
+		// migration
+		migration_attrs += "\t\t\t" + attr_str[0] + ": DataTypes." + attr_str[1].toUpperCase() + ",\n";
 	}
 
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');

@@ -20,7 +20,18 @@
 */
 
 
-ActionController = (function(){
-	function ActionController(){}
-	return ActionController;
-}());
+var child_process = require('child_process');
+
+module.exports = function () {
+	// cd into a db directory and run migrations
+	if (process.argv[3] == "db:migrate") {
+		process.chdir('db');
+		child_process.exec(TRAINJS_LIB_PATH + 'node_modules/sequelize/bin/sequelize -m', function (error, stdout, stderr) {
+			console.log(stdout);
+			console.log(stderr);
+			if (error !== null) {
+				console.log(error);
+			}
+		});
+	}
+}
