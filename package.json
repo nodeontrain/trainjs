@@ -1,14 +1,14 @@
 {
   "name": "trainjs",
   "description": "Web framework",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
-  "bin" : {
-    "trainjs" : "./bin/train_command.js"
+  "bin": {
+    "trainjs": "./bin/train_command.js"
   },
   "dependencies": {
     "sequelize": "1.7.0",
-	"sqlite3": "2.1.7",
+    "sqlite3": "2.1.7",
     "fibers": "1.0.1",
     "jroad": "0.1.0",
     "colors": "*",
@@ -27,13 +27,18 @@
     "url": "git://github.com/nodeontrain/trainjs"
   },
   "main": "./lib/train.js",
-  "readmeFilename": "README.md",
-  "gitHead": "7890dd293a7c1dff4c3c2f7b9c136f32378344ac",
   "scripts": {
     "test": "./bin/test/test.sh"
   },
-  "license": [{
-      "type" : "GPL v3",
-      "url" : "http://www.gnu.org/licenses/gpl.html"
-  }]
+  "license": "GPL v3",
+  "bugs": {
+    "url": "https://github.com/nodeontrain/trainjs/issues"
+  },
+  "homepage": "https://github.com/nodeontrain/trainjs",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "trainjs"
+  ]
 }
