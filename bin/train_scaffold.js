@@ -28,9 +28,10 @@ var jroad = require('jroad');
 var readline = require('readline');
 var child_process = require('child_process');
 var inflection = require('inflection');
-var moment = require(TRAINJS_LIB_PATH + 'node_modules/sequelize/node_modules/moment');
+var root_app = process.cwd();
+var moment = require(root_app + '/node_modules/sequelize/node_modules/moment');
 
-var root_app, params, path_templ, lines, src_content, outStr;
+var params, path_templ, lines, src_content, outStr;
 var model, model_name, controller_name, model_plural, migration_file_name;
 var model_attrs = "";
 var migration_attrs = "";
@@ -240,7 +241,6 @@ module.exports = function() {
 
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 	path_templ = lib + 'template/scaffold';
-	root_app = process.cwd();
 	
 	var routes_file = root_app + "/config/routes.ls";
 	var routes_content = fs.readFileSync(routes_file);

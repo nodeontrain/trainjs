@@ -1,14 +1,12 @@
 {
   "name": "trainjs",
   "description": "Web framework",
-  "version": "0.2.5",
+  "version": "0.2.9",
   "author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
   "bin": {
     "trainjs": "./bin/train_command.js"
   },
   "dependencies": {
-    "sequelize": "1.7.0",
-    "sqlite3": "2.1.7",
     "fibers": "1.0.1",
     "jroad": "0.1.0",
     "colors": "*",

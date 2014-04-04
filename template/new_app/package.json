@@ -5,6 +5,8 @@
     "start": "trainjs server"
   },
   "dependencies": {
-    "ejs": "*"
+    "ejs": "*",
+    "sequelize": "1.7.0",
+    "sqlite3": "2.1.19"
   }
 }
