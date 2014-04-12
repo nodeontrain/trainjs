@@ -30,6 +30,7 @@ var child_process = require('child_process');
 var inflection = require('inflection');
 var root_app = process.cwd();
 var moment = require(root_app + '/node_modules/sequelize/node_modules/moment');
+var jtrain = require('../lib/javascripts/jtrain.js');
 
 var params, path_templ, lines, src_content, outStr;
 var model, model_name, controller_name, model_plural, migration_file_name;
@@ -43,12 +44,6 @@ var count = 0;
 var order = 0;
 var question = false;
 var overwrite_all = false;
-
-function jtrain_toTitleCase (str) {
-    return str.replace(/\w\S*/g, function(txt) {
-    	return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-}
 
 function create_file (src, des, file_path, message) {
 	var write_result = fs.writeFileSync(des, src_content);
@@ -220,7 +215,7 @@ module.exports = function() {
 
 		// form.ejs
 		form_html += '\t<div class="field">\n';
-		var attr_name = jtrain_toTitleCase(attr_str[0]);
+		var attr_name = jtrain.toTitleCase(attr_str[0]);
 		form_html += '\t\t<%- label_tag ("'+ model +'_'+ attr_str[0] +'", "'+ attr_name +'") %><br />\n';
 		form_html += '\t\t<%- text_field_tag ("'+ model +'['+ attr_str[0] +']", '+ model +'.'+ attr_str[0] +') %>\n';
 		form_html += '\t</div>\n';

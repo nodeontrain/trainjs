@@ -27,6 +27,7 @@ var diff = require('diff');
 var jroad = require('jroad');
 var readline = require('readline');
 var child_process = require('child_process');
+var jtrain = require('../lib/javascripts/jtrain.js');
 
 var root_app, params, path_templ, lines, file_type, src_content, outStr;
 var count = 0;
@@ -40,11 +41,6 @@ var overwrite_all = false;
 * if file exists, user can choose one option from the list of options
 */
 
-function jtrain_toTitleCase (str) {
-    return str.replace(/\w\S*/g, function(txt) {
-    	return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-}
 function create_file (src, des, file_name, message) {
 	if (file_type == 'image') {
 		var inStr = fs.createReadStream(src);
@@ -95,7 +91,7 @@ function create_app () {
 				file_type = "text";
 				var info_render = {};
 				if(line[1] == 'app/views/layouts/application.ejs')
-					info_render.title = jtrain_toTitleCase(params.app_name);
+					info_render.title = jtrain.toTitleCase(params.app_name);
 				else if(line[1] == 'config/database.ls')
 					info_render.db_name = params.app_name.toLowerCase();
 				else if(line[1] == 'public/index.html')
