@@ -75,7 +75,9 @@ Fiber(function() {
 		require('./train_lake.js')();
 	} else if (process.argv[2] == "generate" || process.argv[2] == "g") {
 		if (process.argv[3] == "scaffold")
-			require('./train_scaffold.js')();
+			require('./train_generate_scaffold.js')();
+		else if (process.argv[3] == "controller")
+			require('./train_generate_controller.js')();
 	} else if (process.argv[2] == "routes") {
 		child_process.exec('lsc '+ TRAINJS_LIB_PATH +'/bin/train_routes.ls', function (error, stdout, stderr) {
 			console.log(stdout);
