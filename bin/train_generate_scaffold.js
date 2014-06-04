@@ -48,31 +48,11 @@ function create_file (src, des, file_path, message) {
 		console.log(write_result);
 }
 
-//function check_file (line) {
-//	var line_arr = line.split('/');
-//	if (line_arr[2] && line_arr[2] == "controller.ls") {
-//		return line_arr[0] + '/' + line_arr[1] + '/' + model_plural + '_' + line_arr[2];
-//	} else if (line_arr[2] && line_arr[2] == "controller_name") {
-//		if (line_arr[3])
-//			return line_arr[0] + '/' + line_arr[1] + '/' + model_plural + '/' + line_arr[3];
-//		else
-//			return line_arr[0] + '/' + line_arr[1] + '/' + model_plural;
-//	} else if (line_arr[2] && line_arr[2] == "model.ls") {
-//		return line_arr[0] + '/' + line_arr[1] + '/' + model + '.ls';
-//	} else if (line_arr[2] && line_arr[2] == "migration.js") {
-//		return line_arr[0] + '/' + line_arr[1] + '/' + migration_file_name + '.js';
-//	} else {
-//		return line;
-//	}
-//}
-
 function generate_scaffold () {
 	for (var i = file_order; i < lines.length; i++) {
         question = false;
 		count++;
 		var line = lines[i].split(" " + path_templ + "/");
-//		var file_path = check_file(line[1]);
-//		var des = root_app + "/" + file_path;
 		var src = path_templ + "/" + line[1];
 
 		if (line[0] == "d") {
@@ -92,38 +72,7 @@ function generate_scaffold () {
                     console.log('      create  '.bold.green + line[1]);
                 }
             }
-		} else {
-//			var info_render = {};
-//			if (line[1] == 'app/controllers/controller.ls') {
-//				info_render.controller_name = controller_name;
-//				info_render.model_plural = model_plural;
-//				info_render.model_name = model_name;
-//				info_render.model = model;
-//			} else if (line[1] == 'app/models/model.ls') {
-//				info_render.model_name = model_name;
-//				info_render.model_attrs = model_attrs;
-//			} else if (line[1] == 'db/migrations/migration.js') {
-//				info_render.model_plural = model_plural;
-//				info_render.migration_attrs = migration_attrs;
-//			} else if (line[1] == 'app/views/controller_name/edit.ejs' ||
-//						line[1] == 'app/views/controller_name/new.ejs') {
-//				info_render.model = model;
-//				info_render.model_plural = model_plural;
-//			} else if (line[1] == 'app/views/controller_name/form.ejs') {
-//				info_render.model = model;
-//				info_render.form_html = form_html;
-//			} else if (line[1] == 'app/views/controller_name/index.ejs') {
-//				info_render.model = model;
-//				info_render.model_plural = model_plural;
-//				info_render.model_name = model_name;
-//				info_render.index_td_html = index_td_html;
-//				info_render.index_th_html = index_th_html;
-//			} else if (line[1] == 'app/views/controller_name/show.ejs') {
-//				info_render.model = model;
-//				info_render.model_plural = model_plural;
-//				info_render.show_html = show_html;
-//			}
-            
+		} else {            
             if (file_templates[line[1]]) {
                 for (var t = template_order; t < file_templates[line[1]].length; t++) {
                     var info_render = file_templates[line[1]][t]['info_render'];
@@ -160,9 +109,8 @@ function generate_scaffold () {
                         var message = '      create  '.bold.green;
                         create_file(src, des, file_path, message);
                     }
-
-                    if (question) break;
                 }
+                if (question) break;
             } else {
                 var file_path = line[1];
                 var des = root_app + "/" + file_path;
@@ -201,10 +149,15 @@ var rl = readline.createInterface({
 });
 rl.on('line', function (key) {
 	if (question) {
-		var line = lines[file_order - 1].split(" " + path_templ + "/");
-		var file_path = check_file(line[1]);
-		var des = root_app + "/" + file_path;
-		var src = path_templ + "/" + line[1];
+        var line = lines[file_order - 1].split(" " + path_templ + "/");
+        var src = path_templ + "/" + line[1];
+        if (file_templates[line[1]]) {
+            var file_path = file_templates[line[1]][template_order]['file_path'];            
+        } else {
+            var file_path = check_file(line[1]);
+        }
+        var des = root_app + "/" + file_path;
+
 		if (key == "h") {
 			console.log('Y - yes, overwrite');
 			console.log('n - no, do not overwrite');
