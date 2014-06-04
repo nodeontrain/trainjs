@@ -154,7 +154,7 @@ rl.on('line', function (key) {
         if (file_templates[line[1]]) {
             var file_path = file_templates[line[1]][template_order]['file_path'];            
         } else {
-            var file_path = check_file(line[1]);
+            var file_path = line[1];
         }
         var des = root_app + "/" + file_path;
 
