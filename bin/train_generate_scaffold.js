@@ -22,183 +22,11 @@
 
 var fs = require('fs');
 var path = require('path');
-var colors = require('colors');
-var diff = require('diff');
-var jroad = require('jroad');
-var readline = require('readline');
-var child_process = require('child_process');
 var inflection = require('inflection');
 var root_app = process.cwd();
 var jtrain = require('../lib/javascripts/jtrain.js');
+var train_generate = require('./train_generate.js');
 
-var file_templates = {};
-var params, path_templ, lines, src_content, outStr;
-
-var count = 0;
-var file_order = 0;
-var template_order = 0;
-var question = false;
-var overwrite_all = false;
-
-function create_file (src, des, file_path, message) {
-	var write_result = fs.writeFileSync(des, src_content);
-	if (typeof write_result == 'undefined')
-		console.log(message + file_path);
-	else
-		console.log(write_result);
-}
-
-function generate_scaffold () {
-	for (var i = file_order; i < lines.length; i++) {
-        question = false;
-		count++;
-		var line = lines[i].split(" " + path_templ + "/");
-		var src = path_templ + "/" + line[1];
-
-		if (line[0] == "d") {
-            if (dir_templates[line[1]]) {
-                for (var t = 0; t < dir_templates[line[1]].length; t++) {
-                    var dir_path = dir_templates[line[1]][t]['dir_path'];
-                    var des = root_app + "/" + dir_path;
-                    if (!fs.existsSync(des)) {
-                        fs.mkdirSync(des);
-                        console.log('      create  '.bold.green + line[1]);
-                    }
-                }
-            } else {
-                var des = root_app + "/" + line[1];
-                if (!fs.existsSync(des)) {
-                    fs.mkdirSync(des);
-                    console.log('      create  '.bold.green + line[1]);
-                }
-            }
-		} else {            
-            if (file_templates[line[1]]) {
-                for (var t = template_order; t < file_templates[line[1]].length; t++) {
-                    var info_render = file_templates[line[1]][t]['info_render'];
-                    var file_path = file_templates[line[1]][t]['file_path'];
-                    var des = root_app + "/" + file_path;
-                    src_content = fs.readFileSync(src).toString();
-                    for (var k in info_render) {
-                        var reg = new RegExp("%%" + k + "%%", "g");		
-                        src_content = src_content.replace(reg, info_render[k]);
-                    }
-
-                    if (fs.existsSync(des)) {
-                        var des_content = fs.readFileSync(des).toString();
-                        if (src_content == des_content) {
-                            console.log('   identical  '.bold.blue + file_path);
-                        } else if (src_content != des_content && overwrite_all == true) {
-                            console.log('    conflict  '.bold.red + file_path)
-                            var message = '       force  '.bold.yellow;
-                            create_file(src, des, file_path, message);
-                        } else if (src_content != des_content && overwrite_all == false) {
-                            if (t == file_templates[line[1]].length - 1) {
-                                file_order = i + 1;
-                                template_order = 0;
-                            } else {
-                                file_order = i;
-                                template_order = t + 1;
-                            }
-                            question = true;
-                            console.log('    conflict  '.bold.red + file_path)
-                            console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
-                            break;
-                        }
-                    } else {
-                        var message = '      create  '.bold.green;
-                        create_file(src, des, file_path, message);
-                    }
-                }
-                if (question) break;
-            } else {
-                var file_path = line[1];
-                var des = root_app + "/" + file_path;
-                src_content = fs.readFileSync(src).toString();
-
-                if (fs.existsSync(des)) {
-                    var des_content = fs.readFileSync(des).toString();
-                    if (src_content == des_content) {
-                        console.log('   identical  '.bold.blue + file_path);
-                    } else if (src_content != des_content && overwrite_all == true) {
-                        console.log('    conflict  '.bold.red + file_path)
-                        var message = '       force  '.bold.yellow;
-                        create_file(src, des, file_path, message);
-                    } else if (src_content != des_content && overwrite_all == false) {
-                        file_order = i + 1;
-                        question = true;
-                        console.log('    conflict  '.bold.red + file_path)
-                        console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
-                        break;
-                    }
-                } else {
-                    var message = '      create  '.bold.green;
-                    create_file(src, des, file_path, message);
-                }
-            }
-		}
-	}
-	if (count == lines.length && question == false)
-		rl.close();
-}
-
-var rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout,
-	terminal: false
-});
-rl.on('line', function (key) {
-	if (question) {
-        var line = lines[file_order - 1].split(" " + path_templ + "/");
-        var src = path_templ + "/" + line[1];
-        if (file_templates[line[1]]) {
-            var file_path = file_templates[line[1]][template_order]['file_path'];            
-        } else {
-            var file_path = line[1];
-        }
-        var des = root_app + "/" + file_path;
-
-		if (key == "h") {
-			console.log('Y - yes, overwrite');
-			console.log('n - no, do not overwrite');
-			console.log('a - all, overwrite this and all others');
-			console.log('q - quit, abort');
-			console.log('d - diff, show the differences between the old and the new');
-			console.log('h - help, show this help');
-		} else if (key == "y" || key == "Y") {
-			var message = '       force  '.bold.yellow;
-			create_file(src, des, file_path, message);
-			generate_scaffold();
-			if (count == lines.length)
-				rl.close();
-		} else if (key == "n") {
-			var message = '        skip  '.bold.yellow + file_path;
-			console.log(message);
-			generate_scaffold();
-			if (count == lines.length)
-				rl.close();
-		} else if (key == "a") {
-			overwrite_all = true;
-			var message = '       force  '.bold.yellow;
-			create_file(src, des, file_path, message);
-			generate_scaffold();
-			rl.close();
-		} else if (key == "q") {
-			console.log('Aborting...');
-			rl.close();
-		} else if (key == "d") {
-			var des_content = fs.readFileSync(des).toString();
-			var diff_result = diff.createPatch(des, des_content, src_content);
-			console.log(diff_result);
-			console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
-		}
-	}
-});
-
-/**
-* Read all files in template folder.
-* Change content and then resave it.
-*/
 module.exports = function() {
 	var model_name = process.argv[4];
 	var model = model_name.toLowerCase();
@@ -240,13 +68,13 @@ module.exports = function() {
 		migration_attrs += "\t\t\t" + attr_str[0] + ": DataTypes." + attr_str[1].toUpperCase() + ",\n";
 	}
 
-    dir_templates = {
+    var dir_templates = {
         'app/views/controller_name': [
             { dir_path: 'app/views/' + model_plural }
         ]
     }
     
-    file_templates = {
+    var file_templates = {
         'app/controllers/controller.ls': [
             {
                 file_path: 'app/controllers/' + model_plural + '_controller.ls',
@@ -327,14 +155,13 @@ module.exports = function() {
         ]
     }
 
-	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
-	path_templ = lib + 'template/scaffold';
-	
 	var routes_file = root_app + "/config/routes.ls";
 	var routes_content = fs.readFileSync(routes_file);
 	routes_content += '\n\tresources "' + model_plural + '"';
 	fs.writeFileSync(routes_file, routes_content);
 
-	lines = jroad.list_files(path_templ);
-	generate_scaffold();
+    var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
+	var path_templ = lib + 'template/scaffold';
+    
+	train_generate(path_templ, dir_templates, file_templates);
 }
