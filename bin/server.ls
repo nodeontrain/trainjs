@@ -22,6 +22,11 @@
 
 require! trainjs
 require! http
-server = http.createServer trainjs.newServer
-server.listen process.argv[2], '127.0.0.1'
+require! connect
+
+app = connect()
+    .use(connect.bodyParser())
+    .use(trainjs.newServer)
+
+http.createServer(app).listen(process.argv[2], '127.0.0.1')
 console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'

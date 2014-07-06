@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "fibers": "1.0.1",
+    "connect": "*",
     "jroad": "0.1.0",
     "colors": "*",
     "diff": "*",
@@ -26,7 +27,7 @@
   },
   "main": "./lib/train.js",
   "scripts": {
-    "test": "./bin/test/test.sh"
+    "test": "./bin/test.sh"
   },
   "license": "GPL v3",
   "bugs": {
