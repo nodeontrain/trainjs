@@ -21,12 +21,36 @@
 
 
 require! trainjs
+#require! jroad
 require! http
-require! connect
+#require! connect
+#require! 'body-parser'
+#require! 'serve-favicon'
 
-app = connect()
-    .use(connect.bodyParser())
-    .use(trainjs.newServer)
+#app = connect()
+#    .use(bodyParser.json())
+#    .use(bodyParser.text())
+#    .use(trainjs.newServer)
+#    .use(serveFavicon(jroad.favicon(process.cwd())))
+#
+#http.createServer(app).listen(process.argv[2], '127.0.0.1')
+#console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
 
-http.createServer(app).listen(process.argv[2], '127.0.0.1')
+#app = connect()
+#    .use(bodyParser.json())
+#    .use(bodyParser.text())
+#    .use(trainjs.newServer)
+#    .use(serveFavicon(jroad.favicon(process.cwd())))
+#
+#http.createServer(app).listen(process.argv[2], '127.0.0.1')
+#console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
+
+
+
+http.createServer(trainjs.newServer).listen(process.argv[2], '127.0.0.1')
 console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
+
+
+
+
+

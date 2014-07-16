@@ -9,6 +9,9 @@
   "dependencies": {
     "fibers": "1.0.1",
     "connect": "*",
+    "body-parser": "*",
+    "serve-favicon": "*",
+    "urlrouter": "*",
     "jroad": "0.1.0",
     "colors": "*",
     "diff": "*",
