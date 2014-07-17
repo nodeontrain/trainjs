@@ -21,34 +21,34 @@
 
 
 require! trainjs
-#require! jroad
+require! jroad
 require! http
-#require! connect
-#require! 'body-parser'
-#require! 'serve-favicon'
+require! connect
+require! 'body-parser'
+require! 'serve-favicon'
+require! 'method-override'
 
-#app = connect()
-#    .use(bodyParser.json())
-#    .use(bodyParser.text())
-#    .use(trainjs.newServer)
-#    .use(serveFavicon(jroad.favicon(process.cwd())))
-#
-#http.createServer(app).listen(process.argv[2], '127.0.0.1')
-#console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
+app = connect()
+    .use(serveFavicon(jroad.favicon(process.cwd())))
+    .use(methodOverride('_method'))
+    .use(methodOverride('X-HTTP-Method'))
+    .use(methodOverride('X-HTTP-Method-Override'))
+    .use(methodOverride('X-Method-Override'))
+    .use(bodyParser.json())
+    .use(trainjs.newServer)
 
-#app = connect()
-#    .use(bodyParser.json())
-#    .use(bodyParser.text())
-#    .use(trainjs.newServer)
-#    .use(serveFavicon(jroad.favicon(process.cwd())))
-#
-#http.createServer(app).listen(process.argv[2], '127.0.0.1')
-#console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
-
-
-
-http.createServer(trainjs.newServer).listen(process.argv[2], '127.0.0.1')
+http.createServer(app).listen(process.argv[2], '127.0.0.1')
 console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
+
+#app = connect()
+#    .use(bodyParser.json())
+#    .use(bodyParser.text())
+#    .use(trainjs.newServer)
+#    .use(serveFavicon(jroad.favicon(process.cwd())))
+#
+#http.createServer(app).listen(process.argv[2], '127.0.0.1')
+#console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
+
 
 
 
