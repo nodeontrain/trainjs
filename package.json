@@ -10,6 +10,7 @@
     "fibers": "1.0.1",
     "connect": "*",
     "body-parser": "*",
+    "cookie-parser": "*",
     "serve-favicon": "*",
     "method-override": "*",
     "barista": "*",

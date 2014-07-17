@@ -27,6 +27,7 @@ require! connect
 require! 'body-parser'
 require! 'serve-favicon'
 require! 'method-override'
+require! 'cookie-parser'
 
 app = connect()
     .use(serveFavicon(jroad.favicon(process.cwd())))
@@ -35,6 +36,8 @@ app = connect()
     .use(methodOverride('X-HTTP-Method-Override'))
     .use(methodOverride('X-Method-Override'))
     .use(bodyParser.json())
+    .use(bodyParser.urlencoded())
+    .use(cookieParser())
     .use(trainjs.newServer)
 
 http.createServer(app).listen(process.argv[2], '127.0.0.1')
