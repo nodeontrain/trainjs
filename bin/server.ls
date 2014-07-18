@@ -36,7 +36,7 @@ app = connect()
     .use(methodOverride('X-HTTP-Method-Override'))
     .use(methodOverride('X-Method-Override'))
     .use(bodyParser.json())
-    .use(bodyParser.urlencoded())
+    .use(bodyParser.urlencoded({ extended: true }))
     .use(cookieParser())
     .use(trainjs.newServer)
 
