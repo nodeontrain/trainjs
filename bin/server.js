@@ -21,48 +21,45 @@
 
 
 var connect = require('connect');
+var fs = require('fs');
 var trainjs = require('trainjs');
 var bodyParser = require('body-parser');
 var http = require('http');
+var url = require('url');
+var exec = require('child_process').exec;
+var Fiber = require('fibers');
+
+var pre_run_path = ROOT_APP + '/config/pre_run.js';
+var pre_run = fs.existsSync( pre_run_path );
 
 var app = connect();
 
+function runServer() {
+	app.use(bodyParser.json({limit: '50mb'}));
+	app.use(function (req, res, next) {
+		Fiber(function() {
+			var url_parts = url.parse(req.url, true);
+			req.query = url_parts.query;
+			next();
+		}).run();
+	});
+	app.use(trainjs.newServer);
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(trainjs.newServer);
+	http.createServer(app).listen(process.argv[2], '127.0.0.1');
+	console.log('=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server');
+}
 
-
-http.createServer(app).listen(process.argv[2], '127.0.0.1');
-console.log('=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server');
-
-
-//require! trainjs
-//require! jroad
-//require! http
-//require! connect
-//require! 'body-parser'
-//require! 'serve-favicon'
-//require! 'method-override'
-//require! 'cookie-parser'
-//
-//app = connect()
-//    .use(serveFavicon(jroad.favicon(process.cwd())))
-//    .use(methodOverride('_method'))
-//    .use(methodOverride('X-HTTP-Method'))
-//    .use(methodOverride('X-HTTP-Method-Override'))
-//    .use(methodOverride('X-Method-Override'))
-//    .use(bodyParser.json())
-//    .use(bodyParser.urlencoded({ extended: true }))
-//    .use(cookieParser())
-//    .use(trainjs.newServer)
-//
-//http.createServer(app).listen(process.argv[2], '127.0.0.1')
-//console.log '=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server'
-
-
-
-
-
-
-
+if ( pre_run_path ) {
+	var cmd = require( pre_run_path );
+	console.log('=> Run config/pre_run.js');
+	exec(cmd, function (error, stdout, stderr) {
+		if (error) console.log(error);
+		else {
+			PRE_RUN_STDOUT = stdout;
+			runServer();
+		}
+	});
+} else {
+	runServer();
+}
 
