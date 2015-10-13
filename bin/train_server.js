@@ -25,8 +25,8 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 
 module.exports = function (port) {
-	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.ls';
-	var lsc = spawn('lsc', [path_server_ls, port]);
+	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.js';
+	var lsc = spawn('node', [path_server_ls, port]);
 
 	lsc.stdout.on('data', function (data) {
 		var outdata = "";

@@ -34,27 +34,11 @@ var info_param = {};
 function checkinfo () {
 	info_param.trainjs_version = require(TRAINJS_LIB_PATH + 'package.json').version;
 	info_param.node_version = process.version.substr(1);
-
-	var fiber = Fiber.current;
-	child_process.exec('lsc -v', function (error, stdout, stderr) {
-		fiber.run(stdout);
-		console.log(stderr);
-		if (error !== null) {
-			console.log(error);
-		}
-	});
-	var str_lsc_ver = Fiber.yield();
-    if (!str_lsc_ver) {
-        console.log('LiveScript is not installed');
-        return;
-    }
-	var num_ver_str = str_lsc_ver.split(" ")[1].split("\n");
-	info_param.livescript_version = num_ver_str[0];
 }
 
 function isNormalInteger(str) {
-    var n = ~~Number(str);
-    return String(n) === str && n >= 0;
+	var n = ~~Number(str);
+	return String(n) === str && n >= 0;
 }
 
 Fiber(function() {
@@ -69,30 +53,5 @@ Fiber(function() {
 			var port = '1337';
 		}
 		require('./train_server.js')(port);
-	} else if (process.argv[2] == "new") {
-		require('./train_new.js')(info_param);
-	} else if (process.argv[2] == "lake") {
-		require('./train_lake.js')();
-	} else if (process.argv[2] == "generate" || process.argv[2] == "g") {
-		if (process.argv[3] == "scaffold")
-			require('./train_generate_scaffold.js')();
-		else if (process.argv[3] == "controller")
-			require('./train_generate_controller.js')();
-	} else if (process.argv[2] == "routes") {
-		child_process.exec('lsc '+ TRAINJS_LIB_PATH +'/bin/train_routes.ls', function (error, stdout, stderr) {
-			console.log(stdout);
-			console.log(stderr);
-			if (error !== null) {
-				console.log(error);
-			}
-			process.kill('SIGTERM');
-		});
-	} else if (process.argv[2] == "-h" || process.argv[2] == "--help") {
-		fs.readFile(path.dirname(fs.realpathSync(__filename)) + '/train_help', function (err, data) {
-			if (err) throw err;
-			console.log(data.toString());
-		});
-	} else if (process.argv[2] == "-v" || process.argv[2] == "--version") {
-		console.log("trainjs " + info_param.trainjs_version);
 	}
 }).run();

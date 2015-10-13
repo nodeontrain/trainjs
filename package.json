@@ -1,48 +1,35 @@
 {
-  "name": "trainjs",
-  "description": "Web framework",
-  "version": "0.2.9",
-  "author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
-  "bin": {
-    "trainjs": "./bin/train_command.js"
-  },
-  "dependencies": {
-    "fibers": "1.0.1",
-    "connect": "*",
-    "body-parser": "*",
-    "cookie-parser": "*",
-    "serve-favicon": "*",
-    "method-override": "*",
-    "barista": "*",
-    "jroad": "0.1.0",
-    "colors": "*",
-    "diff": "*",
-    "inflection": "*",
-    "html-to-text": "*"
-  },
-  "devDependencies": {
-    "LiveScript": "1.2.0",
-    "ejs": "*",
-    "mocha": "*",
-    "jspec": "0.0.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nodeontrain/trainjs"
-  },
-  "main": "./lib/train.js",
-  "scripts": {
-    "test": "./bin/test.sh"
-  },
-  "license": "GPL v3",
-  "bugs": {
-    "url": "https://github.com/nodeontrain/trainjs/issues"
-  },
-  "homepage": "https://github.com/nodeontrain/trainjs",
-  "directories": {
-    "test": "test"
-  },
-  "keywords": [
-    "trainjs"
-  ]
+	"name": "trainjs",
+	"description": "Web framework",
+	"version": "1.0.0",
+	"author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
+	"bin": {
+		"trainjs": "./bin/train_command.js"
+	},
+	"dependencies": {
+		"fibers": "*",
+		"connect": "*",
+		"connect-route": "*",
+		"body-parser": "*"
+	},
+	"devDependencies": {
+
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/nodeontrain/trainjs"
+	},
+	"main": "./lib/train.js",
+	"scripts": {
+		"test": "./bin/test.sh"
+	},
+	"license": "GPL v3",
+	"bugs": {
+		"url": "https://github.com/nodeontrain/trainjs/issues"
+	},
+	"homepage": "https://github.com/nodeontrain/trainjs",
+	"directories": {
+		"test": "test"
+	},
+	"keywords": [ "trainjs", "Node on train", "Ruby on rails" ]
 }

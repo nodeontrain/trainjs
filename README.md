@@ -1,16 +1,14 @@
 # Node On Train
-Welcome to Node on Train  
+Welcome to Node on Train
 [![NPM](https://nodei.co/npm/trainjs.png)](https://nodei.co/npm/trainjs/)
 
 ## Install node on train
 ```shell
-	sudo npm install -g LiveScript
 	sudo npm install -g trainjs
 ```
 
 ## Update node on train
 ```shell
-	sudo npm update -g LiveScript
 	sudo npm update -g trainjs
 ```
 
@@ -26,6 +24,6 @@ To run the tests:
 ```
 
 ## License
-Copyright (C) 2013-2014 by Đặng Duy Thanh
+Copyright (C) by Đặng Duy Thanh
 
 The Node On Train is license under the terms of the GNU General Public License v3.
