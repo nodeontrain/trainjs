@@ -7,14 +7,10 @@
 		"trainjs": "./bin/train_command.js"
 	},
 	"dependencies": {
-		"fibers": "*",
-		"connect": "*",
 		"connect-route": "*",
-		"body-parser": "*"
+		"fibers": "*"
 	},
-	"devDependencies": {
-
-	},
+	"devDependencies": {},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/nodeontrain/trainjs"
@@ -31,5 +27,9 @@
 	"directories": {
 		"test": "test"
 	},
-	"keywords": [ "trainjs", "Node on train", "Ruby on rails" ]
+	"keywords": [
+	"trainjs",
+	"Node on train",
+	"Ruby on rails"
+  ]
 }

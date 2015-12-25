@@ -20,10 +20,8 @@
 */
 
 
-var connect = require('connect');
 var fs = require('fs');
 var trainjs = require('trainjs');
-var bodyParser = require('body-parser');
 var http = require('http');
 var url = require('url');
 var exec = require('child_process').exec;
@@ -32,24 +30,61 @@ var Fiber = require('fibers');
 var pre_run_path = ROOT_APP + '/config/pre_run.js';
 var pre_run = fs.existsSync( pre_run_path );
 
-var app = connect();
+var app_config = require( ROOT_APP + '/config/application.js' );
+var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
+
+var app = require( ROOT_APP + '/app.js' );
 
 function runServer() {
-	app.use(bodyParser.json({limit: '50mb'}));
 	app.use(function (req, res, next) {
 		Fiber(function() {
 			var url_parts = url.parse(req.url, true);
 			req.query = url_parts.query;
+
+			if ( app_config.cors ) {
+				res.setHeader("Access-Control-Allow-Origin", "*");
+				res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+				res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+			}
+
+			res.setHeader("Content-Type", "application/json");
 			next();
 		}).run();
 	});
+
+	var application = new ApplicationController();
+	app.use(function (req, res, next) {
+		var assets = ['image/png', 'text/html', 'application/javascript', 'text/css'];
+		var content_type = req.headers.accept.split(',')[0];
+		if (req.headers['content-type'])
+			content_type = req.headers['content-type'];
+
+		if (content_type == '*/*') {
+			if ( /\.js$/.test(req.url) )
+				content_type = 'application/javascript';
+		}
+
+		console.log(content_type);
+
+		var url_path = req.url.split('?')[0];
+		if (assets.indexOf(content_type) > -1 && url_path != '/' && fs.existsSync(ROOT_APP + '/public' + url_path)) {
+			fs.readFile(ROOT_APP + '/public' + url_path, function(err, page) {
+				res.writeHead(200, {'Content-Type': content_type});
+				res.write(page);
+				res.end();
+			});
+		} else {
+			next();
+		}
+	});
+	app.use(application.before);
 	app.use(trainjs.newServer);
 
 	http.createServer(app).listen(process.argv[2], '127.0.0.1');
 	console.log('=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server');
 }
 
-if ( pre_run_path ) {
+if ( pre_run ) {
 	var cmd = require( pre_run_path );
 	console.log('=> Run config/pre_run.js');
 	exec(cmd, function (error, stdout, stderr) {
