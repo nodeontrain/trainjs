@@ -1,16 +1,20 @@
 {
 	"name": "trainjs",
 	"description": "Web framework",
-	"version": "1.0.1",
+	"version": "2.0.0",
 	"author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
 	"bin": {
 		"trainjs": "./bin/train_command.js"
 	},
 	"dependencies": {
 		"connect-route": "*",
-		"fibers": "*"
+		"fibers": "*",
+		"colors": "*",
+		"diff": "*"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"mocha": "*"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/nodeontrain/trainjs"
@@ -28,8 +32,9 @@
 		"test": "test"
 	},
 	"keywords": [
-	"trainjs",
-	"Node on train",
-	"Ruby on rails"
-  ]
+		"trainjs",
+		"Node on train",
+		"Angular",
+		"Ruby on rails"
+	]
 }

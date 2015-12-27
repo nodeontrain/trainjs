@@ -4,7 +4,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -53,5 +53,14 @@ Fiber(function() {
 			var port = '1337';
 		}
 		require('./train_server.js')(port);
+	} else if (process.argv[2] == "new") {
+		require('./train_new.js')(info_param);
+	} else if (process.argv[2] == "-h" || process.argv[2] == "--help") {
+		fs.readFile(path.dirname(fs.realpathSync(__filename)) + '/train_help', function (err, data) {
+			if (err) throw err;
+			console.log(data.toString());
+		});
+	} else if (process.argv[2] == "-v" || process.argv[2] == "--version") {
+		console.log("trainjs " + info_param.trainjs_version);
 	}
 }).run();

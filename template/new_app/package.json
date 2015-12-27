@@ -1,0 +1,7 @@
+{
+  "name": "application-name",
+  "version": "1.0.0",
+  "dependencies": {
+	"connect": "*"
+  }
+}

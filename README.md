@@ -16,11 +16,10 @@ Welcome to Node on Train
 Before you run tests, you may need to first install mocha module and jspec module.
 ```shell
 	sudo npm install -g mocha
-	npm install jspec
 ```
 To run the tests:
 ```shell
-	mocha
+	./bin/test.sh
 ```
 
 ## License
