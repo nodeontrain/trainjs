@@ -2,6 +2,8 @@
 
 var myApp = angular.module('myApp', [
 	'ui.router',
+	'bodyDirective',
+	'headDirective'
 ]);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

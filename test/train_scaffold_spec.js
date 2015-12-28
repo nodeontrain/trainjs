@@ -1,16 +1,15 @@
 var fs = require('fs');
 var path = require('path');
 
-var child_process = require('child_process');
 var assert = require('assert');
 
 var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 
 var listFiles = require(lib + 'lib/helpers/list_files.js');
 
-it("generate new app", function() {
-	var path1 = '/tmp/my_app';
-	var path2 = lib + 'test/files_generated/my_app';
+it("generate scaffold User", function() {
+	var path1 = '/tmp/scaffold_app';
+	var path2 = lib + 'test/files_generated/scaffold_app';
 	var files = listFiles(path2);
 
 	for (var i = 0; i < files.length; i++) {

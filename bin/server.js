@@ -64,8 +64,6 @@ function runServer() {
 				content_type = 'application/javascript';
 		}
 
-		console.log(content_type);
-
 		var url_path = req.url.split('?')[0];
 		if (assets.indexOf(content_type) > -1 && url_path != '/' && fs.existsSync(ROOT_APP + '/public' + url_path)) {
 			fs.readFile(ROOT_APP + '/public' + url_path, function(err, page) {

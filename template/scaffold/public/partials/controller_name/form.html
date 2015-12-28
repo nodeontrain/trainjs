@@ -1,0 +1,11 @@
+<h1>{{ title }}</h1>
+
+<form form-for="%%model%%" submit-with="save%%model_name%%()">
+%%form_html%%
+	<div class="actions">
+		<submit-button label="{{ submit_button_label }}"></submit-button>
+	</div>
+</form>
+
+<span ng-if="%%model%%.id"><a href ui-sref="%%model%%_detail({id: %%model%%.id})">Show</a> |</span>
+<a href ui-sref="%%model_plural%%">Back</a>

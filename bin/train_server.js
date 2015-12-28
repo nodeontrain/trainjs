@@ -43,6 +43,6 @@ module.exports = function (port) {
 	lsc.on('exit', function (code) {
 		console.log('Error Code: ' + code);
 		console.log('Exiting');
-		process.kill();
+		lsc.kill();
 	});
 }

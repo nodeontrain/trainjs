@@ -2,6 +2,8 @@
 
 var %%angular_app_name%% = angular.module('%%angular_app_name%%', [
 	'ui.router',
+	'bodyDirective',
+	'headDirective'
 ]);
 
 %%angular_app_name%%.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

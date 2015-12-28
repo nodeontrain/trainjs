@@ -44,14 +44,12 @@ function isNormalInteger(str) {
 Fiber(function() {
 	checkinfo();
 	if (process.argv[2] == "server" || process.argv[2] == "s") {
-		if (process.argv[3] && process.argv[3] == "-p" && process.argv[4]) {
-			if (isNormalInteger(process.argv[4]))
-				var port = process.argv[4];
-			else
-				var port = '1337';
-		} else {
-			var port = '1337';
+		var port = '1337';
+		var port_param_index = process.argv.indexOf("-p");
+		if ( port_param_index > -1 && process.argv[ port_param_index ] && isNormalInteger( process.argv[ port_param_index ] ) ) {
+			port = process.argv[ port_param_index ];
 		}
+
 		require('./train_server.js')(port);
 	} else if (process.argv[2] == "new") {
 		require('./train_new.js')(info_param);
@@ -62,5 +60,8 @@ Fiber(function() {
 		});
 	} else if (process.argv[2] == "-v" || process.argv[2] == "--version") {
 		console.log("trainjs " + info_param.trainjs_version);
+	} else if (process.argv[2] == "generate" || process.argv[2] == "g") {
+		if (process.argv[3] == "scaffold")
+			require('./train_generate_scaffold.js')();
 	}
 }).run();

@@ -1,0 +1,25 @@
+<p notice id="notice"></p>
+
+<h1>Listing %%controller_name%%</h1>
+
+<table>
+	<thead>
+		<tr>
+%%index_th_html%%
+			<th colspan="3"></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr ng-repeat="%%model%% in %%model_plural%%">
+%%index_td_html%%
+			<td><a href ui-sref="%%model%%_detail({id: %%model%%.id})">Show</a></td>
+			<td><a href ui-sref="%%model%%_form({id: %%model%%.id})">Edit</a></td>
+			<td><a href ng-click="delete%%model_name%%(%%model%%.id)">Delete</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+
+<a href ui-sref="%%model%%_form({id: 'new'})">New %%model_name%%</a>

@@ -10,7 +10,8 @@
 		"connect-route": "*",
 		"fibers": "*",
 		"colors": "*",
-		"diff": "*"
+		"diff": "*",
+		"inflection": "*"
 	},
 	"devDependencies": {
 		"mocha": "*"

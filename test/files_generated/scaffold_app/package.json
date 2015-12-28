@@ -1,0 +1,10 @@
+{
+  "name": "scaffold_app",
+  "version": "1.0.0",
+  "dependencies": {
+	"sqlite3": "*",
+	"sequelize": "*",
+	"body-parser": "*",
+	"connect": "*"
+  }
+}

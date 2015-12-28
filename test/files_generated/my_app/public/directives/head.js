@@ -1,4 +1,6 @@
-myApp.directive('head', function() {
+var headDirective = angular.module('headDirective', []);
+
+headDirective.directive('head', function() {
 	return {
 		restrict: 'E',
 		link: function(scope, elem, attrs) {

@@ -1,6 +1,14 @@
 #!/bin/sh
 
-rm -rf /tmp/my_app
-./bin/train_command.js new /tmp/my_app > /dev/null 2>&1 &
+BASEDIR=$(pwd $0)
 
-mocha
+rm -rf /tmp/my_app
+rm -rf /tmp/scaffold_app
+./bin/train_command.js new /tmp/my_app
+./bin/train_command.js new /tmp/scaffold_app
+
+cd /tmp/scaffold_app
+eval "$BASEDIR/bin/train_command.js generate scaffold User name:string email:string"
+
+cd $BASEDIR
+mocha test/*_spec.js
