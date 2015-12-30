@@ -1,7 +1,7 @@
 {
 	"name": "trainjs",
 	"description": "Web framework",
-	"version": "2.0.0",
+	"version": "2.0.7",
 	"author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
 	"bin": {
 		"trainjs": "./bin/train_command.js"
@@ -24,7 +24,7 @@
 	"scripts": {
 		"test": "./bin/test.sh"
 	},
-	"license": "GPL v3",
+	"license": "GPL-3.0",
 	"bugs": {
 		"url": "https://github.com/nodeontrain/trainjs/issues"
 	},

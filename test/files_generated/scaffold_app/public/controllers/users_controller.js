@@ -4,7 +4,7 @@ var usersController = angular.module('usersController', []);
 
 usersController.controller(
 	'UsersCtrl',
-	['$scope', '$state', 'users', 'User', 'flashHelper', function ($scope, $state, users, User, flashHelper) {
+	['$scope', '$state', 'flashHelper', 'users', 'User', function ($scope, $state, flashHelper, users, User) {
 		$scope.users = users;
 		$scope.deleteUser = function(id) {
 			if (window.confirm('Are you sure?')) {
@@ -21,7 +21,7 @@ usersController.controller(
 
 usersController.controller(
 	'UserFormCtrl',
-	['$scope', '$state', 'User', 'flashHelper', 'user', function ($scope, $state, User, flashHelper, user) {
+	['$scope', '$state', 'flashHelper', 'scaffoldHelper', 'User', 'user', function ($scope, $state, flashHelper, scaffoldHelper, User, user) {
 		$scope.user = user;
 		var service = 'create';
 		var message = 'User was successfully created.';
@@ -36,10 +36,14 @@ usersController.controller(
 
 		$scope.saveUser = function() {
 			User[service]($scope.user, function(user){
-				flashHelper.set(message);
-				$state.transitionTo('user_detail', {id: user.id}, {
-					reload: true, inherit: false, notify: true
-				});
+				if ( user.errors ) {
+					scaffoldHelper.errors(user.errors, 'user');
+				} else {
+					flashHelper.set(message);
+					$state.transitionTo('user_detail', {id: user.id}, {
+						reload: true, inherit: false, notify: true
+					});
+				}
 			});
 		};
 	}]
@@ -47,7 +51,7 @@ usersController.controller(
 
 usersController.controller(
 	'UsersDetailCtrl',
-	['$scope', 'user', 'flashHelper', function ($scope, user, flashHelper) {
+	['$scope', 'flashHelper', 'user', function ($scope, flashHelper, user) {
 		$scope.user = user;
 	}]
 );

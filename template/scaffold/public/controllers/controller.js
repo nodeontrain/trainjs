@@ -4,7 +4,7 @@ var %%model_plural%%Controller = angular.module('%%model_plural%%Controller', []
 
 %%model_plural%%Controller.controller(
 	'%%controller_name%%Ctrl',
-	['$scope', '$state', '%%model_plural%%', '%%model_name%%', 'flashHelper', function ($scope, $state, %%model_plural%%, %%model_name%%, flashHelper) {
+	['$scope', '$state', 'flashHelper', '%%model_plural%%', '%%model_name%%', function ($scope, $state, flashHelper, %%model_plural%%, %%model_name%%) {
 		$scope.%%model_plural%% = %%model_plural%%;
 		$scope.delete%%model_name%% = function(id) {
 			if (window.confirm('Are you sure?')) {
@@ -21,7 +21,7 @@ var %%model_plural%%Controller = angular.module('%%model_plural%%Controller', []
 
 %%model_plural%%Controller.controller(
 	'%%model_name%%FormCtrl',
-	['$scope', '$state', '%%model_name%%', 'flashHelper', '%%model%%', function ($scope, $state, %%model_name%%, flashHelper, %%model%%) {
+	['$scope', '$state', 'flashHelper', 'scaffoldHelper', '%%model_name%%', '%%model%%', function ($scope, $state, flashHelper, scaffoldHelper, %%model_name%%, %%model%%) {
 		$scope.%%model%% = %%model%%;
 		var service = 'create';
 		var message = '%%model_name%% was successfully created.';
@@ -36,10 +36,14 @@ var %%model_plural%%Controller = angular.module('%%model_plural%%Controller', []
 
 		$scope.save%%model_name%% = function() {
 			%%model_name%%[service]($scope.%%model%%, function(%%model%%){
-				flashHelper.set(message);
-				$state.transitionTo('%%model%%_detail', {id: %%model%%.id}, {
-					reload: true, inherit: false, notify: true
-				});
+				if ( %%model%%.errors ) {
+					scaffoldHelper.errors(%%model%%.errors, '%%model%%');
+				} else {
+					flashHelper.set(message);
+					$state.transitionTo('%%model%%_detail', {id: %%model%%.id}, {
+						reload: true, inherit: false, notify: true
+					});
+				}
 			});
 		};
 	}]
@@ -47,7 +51,7 @@ var %%model_plural%%Controller = angular.module('%%model_plural%%Controller', []
 
 %%model_plural%%Controller.controller(
 	'%%controller_name%%DetailCtrl',
-	['$scope', '%%model%%', 'flashHelper', function ($scope, %%model%%, flashHelper) {
+	['$scope', 'flashHelper', '%%model%%', function ($scope, flashHelper, %%model%%) {
 		$scope.%%model%% = %%model%%;
 	}]
 );
