@@ -19,6 +19,7 @@
 }
 
 .trainjs-intro a:hover {
+	background-color: inherit;
 	text-decoration: underline;
 }
 
