@@ -58,8 +58,16 @@ module.exports = function() {
 			type = 'email';
 		} else if (attr_str[0] == 'password') {
 			type = 'password';
+		} else if (attr_str[1] == 'integer') {
+			type = 'number';
 		}
-		form_html += '\t\t<text-field attribute="'+attr_str[0]+'" label="'+attr_name+'" type="'+type+'"></text-field>\n';
+
+		var multiline = '';
+		if ( attr_str[1].toLowerCase() == 'text' ) {
+			multiline = 'multiline';
+		}
+
+		form_html += '\t\t<text-field attribute="'+attr_str[0]+'" label="'+attr_name+'" type="'+type+'" '+multiline+'></text-field>\n';
 		form_html += '\t</div>\n';
 
 		// index.html
@@ -288,14 +296,14 @@ module.exports = function() {
 	if (index_file_content.indexOf('assets/stylesheets/scaffolds.css') < 0) {
 		index_file_content = index_file_content.replace('</title>', '</title>\n\t<link rel="stylesheet" href="assets/stylesheets/scaffolds.css">');
 	}
-	if (index_file_content.indexOf('lib/form-for.default-templates.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="lib/angular-ui-router.min.js"></script>', '<script src="lib/angular-ui-router.min.js"></script>\n\t<script src="lib/form-for.default-templates.js"></script>');
+	if (index_file_content.indexOf('libs/form-for.default-templates.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/form-for.default-templates.js"></script>');
 	}
-	if (index_file_content.indexOf('lib/form-for.min.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="lib/angular-ui-router.min.js"></script>', '<script src="lib/angular-ui-router.min.js"></script>\n\t<script src="lib/form-for.min.js"></script>');
+	if (index_file_content.indexOf('libs/form-for.min.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/form-for.min.js"></script>');
 	}
-	if (index_file_content.indexOf('lib/angular-resource.min.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="lib/angular-ui-router.min.js"></script>', '<script src="lib/angular-ui-router.min.js"></script>\n\t<script src="lib/angular-resource.min.js"></script>');
+	if (index_file_content.indexOf('libs/angular-resource.min.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/angular-resource.min.js"></script>');
 	}
 	if (index_file_content.indexOf('helpers/alert.js') < 0) {
 		index_file_content = index_file_content.replace('<script src="app.js"></script>', '<script src="helpers/alert.js"></script>\n\t<script src="app.js"></script>');
