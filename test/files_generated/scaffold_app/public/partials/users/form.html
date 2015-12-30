@@ -1,0 +1,17 @@
+<h1>{{ title }}</h1>
+
+<form form-for="user" submit-with="saveUser()">
+	<div class="field">
+		<text-field attribute="name" label="Name" type="text" ></text-field>
+	</div>
+	<div class="field">
+		<text-field attribute="email" label="Email" type="email" ></text-field>
+	</div>
+
+	<div class="actions">
+		<submit-button label="{{ submit_button_label }}"></submit-button>
+	</div>
+</form>
+
+<span ng-if="user.id"><a href ui-sref="user_detail({id: user.id})">Show</a> |</span>
+<a href ui-sref="users">Back</a>

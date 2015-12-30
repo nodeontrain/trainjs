@@ -1,12 +1,7 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "scripts": {
-    "start": "trainjs server"
-  },
+  "name": "%%app_name%%",
+  "version": "1.0.0",
   "dependencies": {
-    "ejs": "*",
-    "sequelize": "1.7.0",
-    "sqlite3": "2.1.19"
+	"connect": "*"
   }
 }

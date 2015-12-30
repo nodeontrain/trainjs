@@ -2,7 +2,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 
 module.exports = function (port) {
-	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.ls';
-	var lsc = spawn('lsc', [path_server_ls, port]);
+	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.js';
+	var lsc = spawn('node', [path_server_ls, port]);
 
 	lsc.stdout.on('data', function (data) {
 		var outdata = "";
@@ -43,6 +43,6 @@ module.exports = function (port) {
 	lsc.on('exit', function (code) {
 		console.log('Error Code: ' + code);
 		console.log('Exiting');
-		process.kill();
+		lsc.kill();
 	});
 }

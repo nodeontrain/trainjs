@@ -1,0 +1,14 @@
+<p notice id="notice"></p>
+
+<p>
+	<strong>Name:</strong>
+	{{ user.name }}
+</p>
+<p>
+	<strong>Email:</strong>
+	{{ user.email }}
+</p>
+
+
+<a href ui-sref="user_form({id: user.id})">Edit</a> |
+<a href ui-sref="users">Back</a>

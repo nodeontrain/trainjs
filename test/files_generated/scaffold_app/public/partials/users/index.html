@@ -1,0 +1,29 @@
+<p notice id="notice"></p>
+
+<h1>Listing Users</h1>
+
+<table>
+	<thead>
+		<tr>
+		<th>Name</th>
+		<th>Email</th>
+
+			<th colspan="3"></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr ng-repeat="user in users">
+		<td>{{ user.name }}</td>
+		<td>{{ user.email }}</td>
+
+			<td><a href ui-sref="user_detail({id: user.id})">Show</a></td>
+			<td><a href ui-sref="user_form({id: user.id})">Edit</a></td>
+			<td><a href ng-click="deleteUser(user.id)">Delete</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<br>
+
+<a href ui-sref="user_form({id: 'new'})">New User</a>
