@@ -2,7 +2,7 @@
 
 	This file is a part of node-on-train project.
 
-	Copyright (C) 2013-2014 Thanh D. Dang <thanhdd.it@gmail.com>
+	Copyright (C) Thanh D. Dang <thanhdd.it@gmail.com>
 
 	node-on-train is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ var colors = require('colors');
 var diff = require('diff');
 var listFiles = require('../lib/helpers/list_files.js');
 var readline = require('readline');
-var spawn = require('child_process').spawn;
 var root_app = process.cwd();
 
 var params, path_templ, lines, src_content, outStr;
@@ -41,26 +40,6 @@ function create_file (src, des, file_path, message) {
 		console.log(message + file_path);
 	else
 		console.log(write_result);
-}
-
-function npm_install () {
-	rl.close();
-	console.log('         run  '.bold.green + 'npm install');
-
-	var npminstall = spawn('npm', ['install']);
-	npminstall.stdout.on('data', function (data) {
-		var outdata = "";
-		outdata += data;
-		console.log(outdata);
-	});
-	npminstall.stderr.on('data', function (data) {
-		var errdata = "";
-		errdata += data;
-		console.log(errdata);
-	});
-	npminstall.on('exit', function (code) {
-		npminstall.kill();
-	});
 }
 
 function generate_scaffold () {
@@ -155,7 +134,7 @@ function generate_scaffold () {
 	}
 
 	if (count == lines.length && question == false)
-		npm_install();
+		rl.close();
 }
 
 var rl = readline.createInterface({
