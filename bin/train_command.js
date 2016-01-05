@@ -46,10 +46,9 @@ Fiber(function() {
 	if (process.argv[2] == "server" || process.argv[2] == "s") {
 		var port = '1337';
 		var port_param_index = process.argv.indexOf("-p");
-		if ( port_param_index > -1 && process.argv[ port_param_index ] && isNormalInteger( process.argv[ port_param_index ] ) ) {
-			port = process.argv[ port_param_index ];
+		if ( port_param_index > -1 && process.argv[ port_param_index + 1 ] && isNormalInteger( process.argv[ port_param_index + 1 ] ) ) {
+			port = process.argv[ port_param_index + 1 ];
 		}
-
 		require('./train_server.js')(port);
 	} else if (process.argv[2] == "new") {
 		require('./train_new.js')(info_param);
