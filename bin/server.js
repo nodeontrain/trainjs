@@ -54,18 +54,33 @@ function runServer() {
 
 	var application = new ApplicationController();
 	app.use(function (req, res, next) {
-		var assets = ['image/png', 'text/html', 'application/javascript', 'text/css'];
-		var content_type = req.headers.accept.split(',')[0];
-		if (req.headers['content-type'])
-			content_type = req.headers['content-type'];
+		var assets = ['image/', 'text/html', 'application/javascript', 'text/css'];
+		var content_type = 'text/plain';
+		if (req.headers.accept) {
+			content_type = req.headers.accept.split(',')[0];
+			if (req.headers['content-type'])
+				content_type = req.headers['content-type'];
 
-		if (content_type == '*/*') {
-			if ( /\.js$/.test(req.url) )
+			if (content_type == '*/*' && /\.js$/.test(req.url)) {
 				content_type = 'application/javascript';
+			}
+
+			if (content_type == 'image/webp' && /\.png$/.test(req.url)) {
+				content_type = 'image/png';
+			}
 		}
 
 		var url_path = req.url.split('?')[0];
-		if (assets.indexOf(content_type) > -1 && url_path != '/' && fs.existsSync(ROOT_APP + '/public' + url_path)) {
+
+		var is_asset = false;
+		for (var k in assets) {
+			if ( content_type.indexOf(assets[k]) > -1 ) {
+				is_asset = true;
+				break;
+			}
+		}
+
+		if (is_asset && url_path != '/' && fs.existsSync(ROOT_APP + '/public' + url_path)) {
 			fs.readFile(ROOT_APP + '/public' + url_path, function(err, page) {
 				res.writeHead(200, {'Content-Type': content_type});
 				res.write(page);
