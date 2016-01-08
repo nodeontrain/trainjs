@@ -93,8 +93,10 @@ function runServer() {
 	app.use(application.before);
 	app.use(trainjs.newServer);
 
-	http.createServer(app).listen(process.argv[2], '127.0.0.1');
-	console.log('=> Server running at http://0.0.0.0:' + process.argv[2] + '\n=> Ctrl-C to shutdown server');
+	var port = process.env.PORT || process.argv[2];
+
+	http.createServer(app).listen(port);
+	console.log('=> Server running at http://0.0.0.0:' + port + '\n=> Ctrl-C to shutdown server');
 }
 
 if ( pre_run ) {
