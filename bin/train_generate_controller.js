@@ -32,6 +32,7 @@ module.exports = function() {
 	var controller_name = stringHelper.CamelCase2Underscore( process.argv[4] );
 
 	var controller_js = '';
+	var controller_test_js = '';
 	var action_templates = [];
 	for (var i = 5; i < process.argv.length; i++) {
 		var action = process.argv[i];
@@ -43,6 +44,12 @@ module.exports = function() {
 		controller_js += "\t}]\n";
 		controller_js += ");\n";
 
+		controller_test_js += "\tit('should get "+action.toLowerCase()+"', function() {\n";
+		controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/"+controller_name+"/"+action.toLowerCase()+"';\n";
+		controller_test_js += "\t\tbrowser.get(current_url);\n";
+		controller_test_js += "\t\texpect(browser.getCurrentUrl()).toEqual(current_url);\n";
+		controller_test_js += "\t});\n";
+
 		action_templates.push({
 			file_path: 'public/partials/' + controller_name + '/' + action +'.html',
 			info_render: {
@@ -51,7 +58,6 @@ module.exports = function() {
 				controller_name: controller_name
 			}
 		});
-
 
 		//--- Edit public/app.js ---//
 		var app_file = root_app + "/public/app.js";
@@ -89,6 +95,15 @@ module.exports = function() {
 			}
 		],
 		'public/partials/controller_name/action.html': action_templates,
+		'public/test/e2e/controller_test.js': [
+			{
+				file_path: 'public/test/e2e/' + controller_name + '_controller_test.js',
+				info_render: {
+					controller_test_js: controller_test_js,
+					controller_module: controller_module
+				}
+			}
+		],
 	}
 
 	//--- Edit public/index.html ---//
