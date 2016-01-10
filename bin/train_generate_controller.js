@@ -49,6 +49,7 @@ module.exports = function() {
 		controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/" + state_url + "';\n";
 		controller_test_js += "\t\tbrowser.get(current_url);\n";
 		controller_test_js += "\t\texpect(browser.getCurrentUrl()).toContain('#/" + state_url + "');\n";
+		controller_test_js += "\t\texpect( element(by.css('body')).getText() ).not.toEqual('');\n";
 		controller_test_js += "\t});\n";
 
 		action_templates.push({
