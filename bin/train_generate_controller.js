@@ -44,10 +44,11 @@ module.exports = function() {
 		controller_js += "\t}]\n";
 		controller_js += ");\n";
 
+		var state_url = controller_name + "/" + action.toLowerCase();
 		controller_test_js += "\tit('should get "+action.toLowerCase()+"', function() {\n";
-		controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/"+controller_name+"/"+action.toLowerCase()+"';\n";
+		controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/" + state_url + "';\n";
 		controller_test_js += "\t\tbrowser.get(current_url);\n";
-		controller_test_js += "\t\texpect(browser.getCurrentUrl()).toEqual(current_url);\n";
+		controller_test_js += "\t\texpect(browser.getCurrentUrl()).toContain('#/" + state_url + "');\n";
 		controller_test_js += "\t});\n";
 
 		action_templates.push({
