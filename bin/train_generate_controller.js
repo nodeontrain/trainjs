@@ -96,9 +96,9 @@ module.exports = function() {
 			}
 		],
 		'public/partials/controller_name/action.html': action_templates,
-		'public/test/e2e/controller_test.js': [
+		'public/test/e2e_test/controllers/controller_test.js': [
 			{
-				file_path: 'public/test/e2e/' + controller_name + '_controller_test.js',
+				file_path: 'public/test/e2e_test/controllers/' + controller_name + '_controller_test.js',
 				info_render: {
 					controller_test_js: controller_test_js,
 					controller_module: controller_module
