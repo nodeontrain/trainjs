@@ -26,6 +26,7 @@ var http = require('http');
 var url = require('url');
 var exec = require('child_process').exec;
 var Fiber = require('fibers');
+var path = require('path');
 
 var pre_run_path = ROOT_APP + '/config/pre_run.js';
 var pre_run = fs.existsSync( pre_run_path );
@@ -54,8 +55,9 @@ function runServer() {
 
 	var application = new ApplicationController();
 	app.use(function (req, res, next) {
-		var assets = ['image/', 'text/html', 'application/javascript', 'text/css'];
+		var assets = ['image/', 'text/html', 'application/javascript', 'text/css', 'application/font'];
 		var content_type = 'text/plain';
+
 		if (req.headers.accept) {
 			content_type = req.headers.accept.split(',')[0];
 			if (req.headers['content-type'])
@@ -80,8 +82,14 @@ function runServer() {
 			}
 		}
 
-		if (is_asset && url_path != '/' && fs.existsSync(ROOT_APP + '/public' + url_path)) {
-			fs.readFile(ROOT_APP + '/public' + url_path, function(err, page) {
+		if ( url_path.indexOf('/node_modules/') > -1 && url_path.indexOf('../') < 0 ) {
+			url_path = '..' + url_path;
+		}
+
+		var file_path = path.join(ROOT_APP, '/public', url_path);
+
+		if (is_asset && url_path != '/' && fs.existsSync(file_path)) {
+			fs.readFile(file_path, function(err, page) {
 				res.writeHead(200, {'Content-Type': content_type});
 				res.write(page);
 				res.end();
