@@ -59,7 +59,15 @@ function runServer() {
 		var content_type = 'text/plain';
 
 		if (req.headers.accept) {
-			content_type = req.headers.accept.split(',')[0];
+			var headers_accept = req.headers.accept.split(',');
+			content_type = headers_accept[0];
+
+			for (var i in headers_accept) {
+				if ( headers_accept[i].indexOf('text/plain') > -1 ) {
+					content_type = 'text/html';
+				}
+			}
+
 			if (req.headers['content-type'])
 				content_type = req.headers['content-type'];
 

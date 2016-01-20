@@ -64,5 +64,7 @@ Fiber(function() {
 			require('./train_generate_scaffold.js')();
 		else if (process.argv[3] == "controller")
 			require('./train_generate_controller.js')();
+		else if (process.argv[3] == "model")
+			require('./train_generate_model.js')();
 	}
 }).run();

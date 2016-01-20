@@ -1,0 +1,9 @@
+{
+  "name": "generate_model",
+  "version": "1.0.0",
+  "dependencies": {
+	"sqlite3": "*",
+	"sequelize": "*",
+	"connect": "*"
+  }
+}

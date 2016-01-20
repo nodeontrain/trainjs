@@ -50,7 +50,7 @@ function generate_scaffold () {
 		var src = path_templ + "/" + line[1];
 
 		if (line[0] == "d") {
-			if (dir_templates[line[1]]) {
+			if (dir_templates && dir_templates[line[1]]) {
 				for (var t = 0; t < dir_templates[line[1]].length; t++) {
 					var dir_path = dir_templates[line[1]][t]['dir_path'];
 					var des = root_app + "/" + dir_path;
