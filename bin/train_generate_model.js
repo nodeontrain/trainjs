@@ -70,6 +70,14 @@ module.exports = function() {
 				}
 			}
 		],
+		'test/models/model_test.js': [
+			{
+				file_path: 'test/models/' + model + '_test.js',
+				info_render: {
+					model_name: model_name
+				}
+			}
+		],
 	}
 
 	//--- Edit package.json ---//
