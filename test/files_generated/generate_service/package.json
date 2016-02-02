@@ -1,0 +1,7 @@
+{
+  "name": "generate_service",
+  "version": "1.0.0",
+  "dependencies": {
+	"connect": "*"
+  }
+}

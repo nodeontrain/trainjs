@@ -66,5 +66,7 @@ Fiber(function() {
 			require('./train_generate_controller.js')();
 		else if (process.argv[3] == "model")
 			require('./train_generate_model.js')();
+		else if (process.argv[3] == "service")
+			require('./train_generate_service.js')();
 	}
 }).run();

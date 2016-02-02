@@ -26,19 +26,7 @@ var spawn = require('child_process').spawn;
 
 module.exports = function (port) {
 	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.js';
-	var lsc = spawn('node', [path_server_ls, port]);
-
-	lsc.stdout.on('data', function (data) {
-		var outdata = "";
-		outdata += data;
-		console.log(outdata);
-	});
-
-	lsc.stderr.on('data', function (data) {
-		var errdata = "";
-		errdata += data;
-		console.log(errdata);
-	});
+	var lsc = spawn('node', [path_server_ls, port], { stdio: [0,1,2] });
 
 	lsc.on('exit', function (code) {
 		console.log('Error Code: ' + code);

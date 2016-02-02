@@ -1,0 +1,175 @@
+.trainjs-intro {
+	margin: 0;
+	margin-bottom: 25px;
+	padding: 0;
+	background-color: #46483e;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+	font-size: 14px;
+	color: #333;
+}
+
+.trainjs-intro h1 {
+	font-size: 29px;
+	color: #000;
+}
+
+.trainjs-intro a {
+	color: #690;
+	text-decoration: none;
+}
+
+.trainjs-intro a:hover {
+	background-color: inherit;
+	text-decoration: underline;
+}
+
+.trainjs-intro #page {
+	background-color: white;
+	width: 750px;
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.trainjs-intro #content {
+	float: right;
+	background-color: white;
+	padding: 25px;
+	width: 500px;
+	border: 5px solid #8cc84b;
+	border-top: none;
+}
+
+.trainjs-intro #sidebar {
+	float: left;
+	width: 175px;
+}
+
+.trainjs-intro #about,
+.trainjs-intro #getting-started {
+	padding-left: 75px;
+	padding-right: 30px;
+}
+
+.trainjs-intro #header {
+	padding-left: 20px;
+	margin-bottom: 60px;
+}
+
+.trainjs-intro #header img {
+	float: left;
+	margin-right: 20px;
+}
+
+.trainjs-intro #header h1,
+.trainjs-intro #header h2 {
+	margin: 0;
+}
+
+.trainjs-intro #header h2 {
+	color: #888;
+	font-weight: normal;
+	font-size: 17px;
+}
+
+.trainjs-intro #about h3 {
+	margin: 0;
+	margin-bottom: 10px;
+	font-size: 15px;
+}
+
+.trainjs-intro #about-content {
+	background-color: #ffd;
+	border: 1px solid #AEC516;
+	margin-left: -55px;
+	margin-right: -10px;
+}
+
+.trainjs-intro #about-content table {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 12px;
+	border-collapse: collapse;
+}
+
+.trainjs-intro #about-content td {
+	padding: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.trainjs-intro #about-content td.name {
+	color: #555
+}
+
+.trainjs-intro #about-content td.value {
+	color: #000
+}
+
+.trainjs-intro #getting-started {
+	border-top: 1px solid #ccc;
+	margin-top: 25px;
+	padding-top: 15px;
+}
+
+.trainjs-intro #getting-started h1 {
+	margin: 0;
+	font-size: 21px;
+}
+
+.trainjs-intro #getting-started h2 {
+	margin: 0;
+	font-size: 15px;
+	font-weight: normal;
+	color: #333;
+	margin-bottom: 25px;
+}
+
+.trainjs-intro #getting-started ol {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.trainjs-intro #getting-started li {
+	font-size: 19px;
+	color: #888;
+	margin-bottom: 25px;
+}
+
+.trainjs-intro #getting-started li h2 {
+	margin: 0;
+	font-weight: normal;
+	font-size: 19px;
+	color: #333;
+}
+
+.trainjs-intro #getting-started li p {
+	color: #555;
+	font-size: 14px;
+}
+
+.trainjs-intro #sidebar ul {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.trainjs-intro #sidebar ul h3 {
+	color: white;
+	margin-top: 25px;
+	font-size: 17px;
+	padding-bottom: 10px;
+}
+
+.trainjs-intro #sidebar li {
+	list-style-type: none;
+}
+
+.trainjs-intro #sidebar ul.links li {
+	border-top: 1px solid #626557;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.trainjs-intro .filename {
+	font-style: italic;
+}
