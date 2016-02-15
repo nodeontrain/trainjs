@@ -1,9 +1,11 @@
 {
-  "name": "generate_model",
-  "version": "1.0.0",
-  "dependencies": {
-	"sqlite3": "*",
-	"sequelize": "*",
-	"connect": "*"
-  }
+	"name": "generate_model",
+	"version": "1.0.0",
+	"dependencies": {
+		"sqlite3": "*",
+		"sequelize": "*",
+		"connect": "*",
+		"angular": "1.5.0",
+		"angular-ui-router": "0.2.18"
+	}
 }

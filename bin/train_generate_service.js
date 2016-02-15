@@ -125,14 +125,23 @@ module.exports = function() {
 	//--- Edit public/index.html ---//
 	var index_file = root_app + "/public/index.html";
 	var index_file_content = fs.readFileSync(index_file).toString();
-	if (index_file_content.indexOf('libs/angular-resource.min.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/angular-resource.min.js"></script>');
+	if (index_file_content.indexOf('angular-resource.min.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>', '<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>\n\t<script src="../node_modules/angular-resource/angular-resource.min.js"></script>');
 	}
 	if (index_file_content.indexOf('services/'+model+'.js') < 0) {
 		index_file_content = index_file_content.replace('<script src="app.js"></script>', '<script src="services/'+model+'.js"></script>\n\t<script src="app.js"></script>');
 	}
 	fs.writeFileSync(index_file, index_file_content);
 	//--- Edit public/index.html ---//
+
+	//--- Edit package.json ---//
+	var package_file = root_app + "/package.json";
+	var package_file_content = fs.readFileSync(package_file).toString();
+	if (package_file_content.indexOf('angular-resource') < 0) {
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"angular-resource": "1.5.0",');
+	}
+	fs.writeFileSync(package_file, package_file_content);
+	//--- Edit package.json ---//
 
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 	var path_templ = lib + 'template/service';

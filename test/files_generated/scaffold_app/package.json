@@ -1,10 +1,14 @@
 {
-  "name": "scaffold_app",
-  "version": "1.0.0",
-  "dependencies": {
-	"sqlite3": "*",
-	"sequelize": "*",
-	"body-parser": "*",
-	"connect": "*"
-  }
+	"name": "scaffold_app",
+	"version": "1.0.0",
+	"dependencies": {
+		"angular-resource": "1.5.0",
+		"angular-form-for": "4.1.10",
+		"sqlite3": "*",
+		"sequelize": "*",
+		"body-parser": "*",
+		"connect": "*",
+		"angular": "1.5.0",
+		"angular-ui-router": "0.2.18"
+	}
 }

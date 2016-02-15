@@ -290,20 +290,20 @@ module.exports = function() {
 	//--- Edit public/index.html ---//
 	var index_file = root_app + "/public/index.html";
 	var index_file_content = fs.readFileSync(index_file).toString();
-	if (index_file_content.indexOf('assets/stylesheets/form-for.css') < 0) {
-		index_file_content = index_file_content.replace('</title>', '</title>\n\t<link rel="stylesheet" href="assets/stylesheets/form-for.css">');
+	if (index_file_content.indexOf('form-for.css') < 0) {
+		index_file_content = index_file_content.replace('</title>', '</title>\n\t<link rel="stylesheet" href="../node_modules/angular-form-for/dist/form-for.css">');
 	}
 	if (index_file_content.indexOf('assets/stylesheets/scaffolds.css') < 0) {
 		index_file_content = index_file_content.replace('</title>', '</title>\n\t<link rel="stylesheet" href="assets/stylesheets/scaffolds.css">');
 	}
-	if (index_file_content.indexOf('libs/form-for.default-templates.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/form-for.default-templates.js"></script>');
+	if (index_file_content.indexOf('form-for.default-templates.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>', '<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>\n\t<script src="../node_modules/angular-form-for/dist/form-for.default-templates.js"></script>');
 	}
-	if (index_file_content.indexOf('libs/form-for.min.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/form-for.min.js"></script>');
+	if (index_file_content.indexOf('form-for.min.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>', '<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>\n\t<script src="../node_modules/angular-form-for/dist/form-for.min.js"></script>');
 	}
-	if (index_file_content.indexOf('libs/angular-resource.min.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="libs/angular-ui-router.min.js"></script>', '<script src="libs/angular-ui-router.min.js"></script>\n\t<script src="libs/angular-resource.min.js"></script>');
+	if (index_file_content.indexOf('angular-resource.min.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>', '<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>\n\t<script src="../node_modules/angular-resource/angular-resource.min.js"></script>');
 	}
 	if (index_file_content.indexOf('helpers/alert.js') < 0) {
 		index_file_content = index_file_content.replace('<script src="app.js"></script>', '<script src="helpers/alert.js"></script>\n\t<script src="app.js"></script>');
@@ -338,13 +338,19 @@ module.exports = function() {
 	var package_file = root_app + "/package.json";
 	var package_file_content = fs.readFileSync(package_file).toString();
 	if (package_file_content.indexOf('body-parser') < 0) {
-		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t"body-parser": "*",');
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"body-parser": "*",');
 	}
 	if (package_file_content.indexOf('sequelize') < 0) {
-		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t"sequelize": "*",');
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"sequelize": "*",');
 	}
 	if (package_file_content.indexOf('sqlite3') < 0) {
-		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t"sqlite3": "*",');
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"sqlite3": "*",');
+	}
+	if (package_file_content.indexOf('angular-form-for') < 0) {
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"angular-form-for": "4.1.10",');
+	}
+	if (package_file_content.indexOf('angular-resource') < 0) {
+		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"angular-resource": "1.5.0",');
 	}
 	fs.writeFileSync(package_file, package_file_content);
 	//--- Edit package.json ---//
