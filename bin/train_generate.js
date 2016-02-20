@@ -163,15 +163,17 @@ rl.on('line', function (key) {
 		} else if (key == "y" || key == "Y") {
 			var message = '       force  '.bold.yellow;
 			create_file(src, des, file_path, message);
-			generate_scaffold();
 			if (count == lines.length)
 				rl.close();
+			else
+				generate_scaffold();
 		} else if (key == "n") {
 			var message = '        skip  '.bold.yellow + file_path;
 			console.log(message);
-			generate_scaffold();
 			if (count == lines.length)
 				rl.close();
+			else
+				generate_scaffold();
 		} else if (key == "a") {
 			overwrite_all = true;
 			var message = '       force  '.bold.yellow;

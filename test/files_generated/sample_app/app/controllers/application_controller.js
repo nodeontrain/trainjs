@@ -3,6 +3,6 @@ function ApplicationController() {
 	this.before = function(req, res, next) {
 		next();
 	};
-};
+}
 
 module.exports = ApplicationController;

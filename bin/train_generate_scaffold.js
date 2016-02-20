@@ -190,7 +190,7 @@ module.exports = function() {
 	}
 	if (!is_exist) {
 		var routes_content = fs.readFileSync(routes_file).toString();
-		routes_content = routes_content.replace(']', "\t{ resources: '"+model_plural+"' },\n]");
+		routes_content = routes_content.replace('module.exports = [', "module.exports = [\n\t{ resources: '"+model_plural+"' },");
 		fs.writeFileSync(routes_file, routes_content);
 	}
 	//--- Edit routes ---//

@@ -10,6 +10,6 @@ function UsersController() {
 	this.destroy = function(req, res, next) {
 	};
 
-};
+}
 
 module.exports = UsersController;

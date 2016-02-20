@@ -28,6 +28,6 @@ function UsersController() {
 		res.end();
 	};
 
-};
+}
 
 module.exports = UsersController;

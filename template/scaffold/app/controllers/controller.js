@@ -28,6 +28,6 @@ function %%controller_name%%Controller() {
 		res.end();
 	};
 
-};
+}
 
 module.exports = %%controller_name%%Controller;
