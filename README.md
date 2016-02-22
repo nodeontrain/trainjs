@@ -28,7 +28,7 @@ Step-by-Step Guide For Getting Started
 http://nodeontrain.xyz/tuts/home
 
 ## Report an issue
-Please [create an issue](https://github.com/nodeontrain/trainjs/issues/new) or contact me at [@trainjs](https://twitter.com/trainjs)
+Please [create an issue](https://github.com/nodeontrain/trainjs/issues/new) or contact us at [@trainjs](https://twitter.com/trainjs)
 
 ## License
 Copyright (C) by Đặng Duy Thanh
