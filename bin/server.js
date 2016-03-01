@@ -106,6 +106,18 @@ function runServer() {
 			next();
 		}
 	});
+
+	app.use(function (req, res, next) {
+		try {
+			var Cookies = require( "cookies" );
+			if (!req.cookies)
+				req.cookies = new Cookies(req, res);
+			next();
+		} catch (ex) {
+			next();
+		}
+	});
+
 	app.use(application.before);
 	app.use(trainjs.newServer);
 
