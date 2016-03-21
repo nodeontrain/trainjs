@@ -28,13 +28,39 @@ var exec = require('child_process').exec;
 var Fiber = require('fibers');
 var path = require('path');
 
+
+var global_v_init = trainjs.initServer();
+
 var pre_run_path = ROOT_APP + '/config/pre_run.js';
 var pre_run = fs.existsSync( pre_run_path );
 
 var app_config = require( ROOT_APP + '/config/application.js' );
 var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
 
+
 var app = require( ROOT_APP + '/app.js' );
+
+var beforeAction = function(req, res, next, class_object, action, before_action_i) {
+	if (class_object['before_action']) {
+		var before_action = class_object['before_action'][before_action_i];
+		if (!before_action.only || before_action.only && before_action.only.indexOf(action) > -1) {
+			if (class_object[before_action.action](req, res, next)) { //if res.end()
+				return;
+			}
+
+			if (before_action_i < class_object['before_action'].length - 1) {
+				before_action_i = before_action_i + 1;
+				beforeAction(req, res, next, class_object, action, before_action_i);
+			} else {
+				class_object[action](req, res, next);
+			}
+		} else {
+			class_object[action](req, res, next);
+		}
+	} else {
+		class_object[action](req, res, next);
+	}
+};
 
 function runServer() {
 	app.use(function (req, res, next) {
@@ -54,6 +80,20 @@ function runServer() {
 	});
 
 	var application = new ApplicationController();
+	app.use(function (req, res, next) {
+		try {
+			var Cookies = require( "cookies" );
+			if (!req.cookies)
+				req.cookies = new Cookies(req, res);
+			next();
+		} catch (ex) {
+			next();
+		}
+	});
+
+	app.use(application.before);
+	trainjs.newServer(app, global_v_init);
+
 	app.use(function (req, res, next) {
 		var assets = ['image/', 'text/html', 'application/javascript', 'text/css', 'application/font'];
 		var content_type = 'text/plain';
@@ -95,31 +135,51 @@ function runServer() {
 		}
 
 		var file_path = path.join(ROOT_APP, '/public', url_path);
-
-		if (is_asset && url_path != '/' && fs.existsSync(file_path)) {
-			fs.readFile(file_path, function(err, page) {
-				res.writeHead(200, {'Content-Type': content_type});
-				res.write(page);
-				res.end();
-			});
+		if (is_asset && fs.existsSync(file_path)) {
+			if (url_path == '/') {
+				fs.readFile(ROOT_APP + '/public/index.html', function(err, page) {
+					res.writeHead(200, {'Content-Type': 'text/html'});
+					res.write(page);
+					res.end();
+				});
+			} else {
+				fs.readFile(file_path, function(err, page) {
+					res.writeHead(200, {'Content-Type': content_type});
+					res.write(page);
+					res.end();
+				});
+			}
 		} else {
-			next();
+			var routes = global_v_init.routes;
+			var controllers = global_v_init.controllers;
+
+			var is_route = false;
+
+			for (var k in ROUTE_PATTERNS) {
+				var pattern = ROUTE_PATTERNS[k].pattern;
+				var method = ROUTE_PATTERNS[k].method;
+				var resource = ROUTE_PATTERNS[k].resource;
+				var action = ROUTE_PATTERNS[k].action;
+
+				if (pattern.matches(req.url) && method.toLowerCase() == req.method.toLowerCase()) {
+					var params = pattern.match(req.url);
+					req.params = params.namedParams;
+					try {
+						var class_object = new controllers[resource]();
+						beforeAction(req, res, next, class_object, action, 0);
+						is_route = true;
+						break;
+					} catch(e) {
+						console.log( 'Error: '.bold.red + '"' + resource + ' controller" not found' );
+						res.end();
+					}
+				}
+			}
+
+			if (!is_route)
+				next();
 		}
 	});
-
-	app.use(function (req, res, next) {
-		try {
-			var Cookies = require( "cookies" );
-			if (!req.cookies)
-				req.cookies = new Cookies(req, res);
-			next();
-		} catch (ex) {
-			next();
-		}
-	});
-
-	app.use(application.before);
-	app.use(trainjs.newServer);
 
 	var port = process.env.PORT || process.argv[2];
 
