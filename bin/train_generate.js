@@ -56,7 +56,7 @@ function generate_scaffold () {
 					var des = root_app + "/" + dir_path;
 					if (!fs.existsSync(des)) {
 						fs.mkdirSync(des);
-						console.log('      create  '.bold.green + line[1]);
+						console.log('      create  '.bold.green + dir_path);
 					}
 				}
 			} else {

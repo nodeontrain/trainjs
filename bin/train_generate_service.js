@@ -24,13 +24,16 @@ var fs = require('fs');
 var path = require('path');
 var inflection = require('inflection');
 var root_app = process.cwd();
+var stringHelper = require('../lib/helpers/string_helper.js');
 var train_generate = require('./train_generate.js');
 
 module.exports = function() {
 	var model_name = process.argv[4];
 	var model = model_name.toLowerCase();
 	var controller_name = inflection.pluralize(model_name);
-	var model_plural = inflection.pluralize(model);
+	var model_plural = inflection.pluralize( stringHelper.CamelCase2Underscore( process.argv[4] ) );
+	var file_model_name = stringHelper.CamelCase2Underscore( process.argv[4] );
+	var model_module = stringHelper.Underscore2CamelCaseWithOutTitleCase( process.argv[4] ) + "Service";
 
 	var controller_actions = '';
 	var service_resources = '';
@@ -85,11 +88,11 @@ module.exports = function() {
 		],
 		'public/services/service.js': [
 			{
-				file_path: 'public/services/' + model + '.js',
+				file_path: 'public/services/' + file_model_name + '.js',
 				info_render: {
 					model_plural: model_plural,
 					model_name: model_name,
-					model: model,
+					model_module: model_module,
 					service_resources: service_resources
 				}
 			}
@@ -116,8 +119,8 @@ module.exports = function() {
 	//--- Edit public/app.js ---//
 	var app_file = root_app + "/public/app.js";
 	var app_file_content = fs.readFileSync(app_file).toString();
-	if (app_file_content.indexOf(model + 'Service') < 0) {
-		app_file_content = app_file_content.replace("'ui.router'", "'ui.router',\n\t'" + model + "Service'");
+	if (app_file_content.indexOf(model_module) < 0) {
+		app_file_content = app_file_content.replace("'ui.router'", "'ui.router',\n\t'" + model_module + "'");
 	}
 	fs.writeFileSync(app_file, app_file_content);
 	//--- Edit public/app.js ---//
@@ -128,8 +131,8 @@ module.exports = function() {
 	if (index_file_content.indexOf('angular-resource.min.js') < 0) {
 		index_file_content = index_file_content.replace('<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>', '<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>\n\t<script src="../node_modules/angular-resource/angular-resource.min.js"></script>');
 	}
-	if (index_file_content.indexOf('services/'+model+'.js') < 0) {
-		index_file_content = index_file_content.replace('<script src="app.js"></script>', '<script src="services/'+model+'.js"></script>\n\t<script src="app.js"></script>');
+	if (index_file_content.indexOf('services/'+file_model_name+'.js') < 0) {
+		index_file_content = index_file_content.replace('<script src="app.js"></script>', '<script src="services/'+file_model_name+'.js"></script>\n\t<script src="app.js"></script>');
 	}
 	fs.writeFileSync(index_file, index_file_content);
 	//--- Edit public/index.html ---//
