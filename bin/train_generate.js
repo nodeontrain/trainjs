@@ -87,13 +87,8 @@ function generate_scaffold () {
 							var message = '       force  '.bold.yellow;
 							create_file(src, des, file_path, message);
 						} else if (src_content != des_content && overwrite_all == false) {
-							if (t == file_templates[line[1]].length - 1) {
-								file_order = i + 1;
-								template_order = 0;
-							} else {
-								file_order = i;
-								template_order = t + 1;
-							}
+							file_order = i;
+							template_order = t;
 							question = true;
 							console.log('    conflict  '.bold.red + file_path)
 							console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
@@ -119,7 +114,7 @@ function generate_scaffold () {
 						var message = '       force  '.bold.yellow;
 						create_file(src, des, file_path, message);
 					} else if (src_content != des_content && overwrite_all == false) {
-						file_order = i + 1;
+						file_order = i;
 						question = true;
 						console.log('    conflict  '.bold.red + file_path)
 						console.log('Overwrite '+ des +'? (enter "h" for help) [Ynaqdh]');
@@ -133,8 +128,27 @@ function generate_scaffold () {
 		}
 	}
 
-	if (count == lines.length && question == false)
+	if (count >= lines.length && question == false)
 		rl.close();
+}
+
+function resumeGenerate(obj) {
+	if (obj) {
+		if (obj.length == 1) {
+			template_order = 0;
+			file_order++;
+		} else {
+			if (template_order < obj.length) {
+				template_order++;
+			} else {
+				template_order = 0;
+				file_order++;
+			}
+		}
+	} else {
+		file_order++;
+	}
+	generate_scaffold();
 }
 
 var rl = readline.createInterface({
@@ -144,7 +158,7 @@ var rl = readline.createInterface({
 });
 rl.on('line', function (key) {
 	if (question) {
-		var line = lines[file_order - 1].split(" " + path_templ + "/");
+		var line = lines[file_order].split(" " + path_templ + "/");
 		var src = path_templ + "/" + line[1];
 		if (file_templates[line[1]]) {
 			var file_path = file_templates[line[1]][template_order]['file_path'];
@@ -166,19 +180,19 @@ rl.on('line', function (key) {
 			if (count == lines.length)
 				rl.close();
 			else
-				generate_scaffold();
+				resumeGenerate(file_templates[line[1]]);
 		} else if (key == "n") {
 			var message = '        skip  '.bold.yellow + file_path;
 			console.log(message);
 			if (count == lines.length)
 				rl.close();
 			else
-				generate_scaffold();
+				resumeGenerate(file_templates[line[1]]);
 		} else if (key == "a") {
 			overwrite_all = true;
 			var message = '       force  '.bold.yellow;
 			create_file(src, des, file_path, message);
-			generate_scaffold();
+			resumeGenerate(file_templates[line[1]]);
 			rl.close();
 		} else if (key == "q") {
 			console.log('Aborting...');

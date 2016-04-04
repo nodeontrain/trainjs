@@ -36,55 +36,57 @@ module.exports = function() {
 	var action_templates = [];
 	for (var i = 5; i < process.argv.length; i++) {
 		var action = process.argv[i];
-		var controller_action = controller_module_name + stringHelper.toTitleCase(action) + "Ctrl";
-
-		controller_js += controller_module + '.controller(\n';
-		controller_js += "\t'"+controller_action+"',\n";
-		controller_js += "\t['$scope', function ($scope) {\n";
-		controller_js += "\t}]\n";
-		controller_js += ");\n";
-
-		var state_url = controller_name + "/" + action.toLowerCase();
-		controller_test_js += "\tit('should get "+action.toLowerCase()+"', function() {\n";
-		controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/" + state_url + "';\n";
-		controller_test_js += "\t\tbrowser.get(current_url);\n";
-		controller_test_js += "\t\texpect(browser.getCurrentUrl()).toContain('#/" + state_url + "');\n";
-		controller_test_js += "\t\texpect( element(by.css('body')).getText() ).not.toEqual('');\n";
-		controller_test_js += "\t});\n";
-
-		action_templates.push({
-			file_path: 'public/partials/' + controller_name + '/' + action +'.html',
-			info_render: {
-				controller_module_name: controller_module_name,
-				action: action,
-				controller_name: controller_name
+		if (action != '--no-test-framework') {
+			var controller_action = controller_module_name + stringHelper.toTitleCase(action) + "Ctrl";
+	
+			controller_js += controller_module + '.controller(\n';
+			controller_js += "\t'"+controller_action+"',\n";
+			controller_js += "\t['$scope', function ($scope) {\n";
+			controller_js += "\t}]\n";
+			controller_js += ");\n";
+	
+			var state_url = controller_name + "/" + action.toLowerCase();
+			controller_test_js += "\tit('should get "+action.toLowerCase()+"', function() {\n";
+			controller_test_js += "\t\tvar current_url = 'http://localhost:1337/#/" + state_url + "';\n";
+			controller_test_js += "\t\tbrowser.get(current_url);\n";
+			controller_test_js += "\t\texpect(browser.getCurrentUrl()).toContain('#/" + state_url + "');\n";
+			controller_test_js += "\t\texpect( element(by.css('body')).getText() ).not.toEqual('');\n";
+			controller_test_js += "\t});\n";
+	
+			action_templates.push({
+				file_path: 'public/partials/' + controller_name + '/' + action +'.html',
+				info_render: {
+					controller_module_name: controller_module_name,
+					action: action,
+					controller_name: controller_name
+				}
+			});
+	
+			//--- Edit public/app.js ---//
+			var app_file = root_app + "/public/app.js";
+			var app_file_content = fs.readFileSync(app_file).toString();
+			if (app_file_content.indexOf(controller_module) < 0) {
+				app_file_content = app_file_content.replace("'ui.router'", "'ui.router',\n\t'" + controller_module + "'");
 			}
-		});
-
-		//--- Edit public/app.js ---//
-		var app_file = root_app + "/public/app.js";
-		var app_file_content = fs.readFileSync(app_file).toString();
-		if (app_file_content.indexOf(controller_module) < 0) {
-			app_file_content = app_file_content.replace("'ui.router'", "'ui.router',\n\t'" + controller_module + "'");
+			if (app_file_content.indexOf('partials/'+controller_name+'/'+action+'.html') < 0) {
+				var state_content = "\t.state('"+controller_name+"_"+action+"', {\n"
+				state_content += "\t\turl: '/"+controller_name+"/"+action+"',\n"
+				state_content += "\t\ttemplateUrl: 'partials/"+controller_name+"/"+action+".html',\n"
+				state_content += "\t\tcontroller: '"+controller_action+"'\n"
+				state_content += "\t})"
+				app_file_content = app_file_content.replace('\t$stateProvider', '\t$stateProvider\n' + state_content);
+			}
+	
+			fs.writeFileSync(app_file, app_file_content);
+			//--- Edit public/app.js ---//
 		}
-		if (app_file_content.indexOf('partials/'+controller_name+'/'+action+'.html') < 0) {
-			var state_content = "\t.state('"+controller_name+"_"+action+"', {\n"
-			state_content += "\t\turl: '/"+controller_name+"/"+action+"',\n"
-			state_content += "\t\ttemplateUrl: 'partials/"+controller_name+"/"+action+".html',\n"
-			state_content += "\t\tcontroller: '"+controller_action+"'\n"
-			state_content += "\t})"
-			app_file_content = app_file_content.replace('\t$stateProvider', '\t$stateProvider\n' + state_content);
-		}
-
-		fs.writeFileSync(app_file, app_file_content);
-		//--- Edit public/app.js ---//
 	}
 
 	var dir_templates = {
 		'public/partials/controller_name': [
 			{ dir_path: 'public/partials/' + controller_name }
 		]
-	}
+	};
 
 	var file_templates = {
 		'public/controllers/controller.js': [
@@ -97,7 +99,11 @@ module.exports = function() {
 			}
 		],
 		'public/partials/controller_name/action.html': action_templates,
-		'public/test/e2e_test/controllers/controller_test.js': [
+		'public/test/e2e_test/controllers/controller_test.js': []
+	};
+
+	if (process.argv.indexOf('--no-test-framework') < 0) {
+		file_templates['public/test/e2e_test/controllers/controller_test.js'] = [
 			{
 				file_path: 'public/test/e2e_test/controllers/' + controller_name + '_controller_test.js',
 				info_render: {
@@ -105,7 +111,7 @@ module.exports = function() {
 					controller_module: controller_module
 				}
 			}
-		],
+		];
 	}
 
 	//--- Edit public/index.html ---//

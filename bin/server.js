@@ -170,7 +170,7 @@ function runServer() {
 						is_route = true;
 						break;
 					} catch(e) {
-						console.log( 'Error: '.bold.red + '"' + resource + ' controller" not found' );
+						console.log( 'Error: '.bold.red + e );
 						res.end();
 					}
 				}
