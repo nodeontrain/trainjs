@@ -82,6 +82,8 @@ function generate_scaffold () {
 						var des_content = fs.readFileSync(des).toString();
 						if (src_content == des_content) {
 							console.log('   identical  '.bold.blue + file_path);
+							if (template_order == file_templates[line[1]].length - 1)
+								template_order = 0;
 						} else if (src_content != des_content && overwrite_all == true) {
 							console.log('    conflict  '.bold.red + file_path)
 							var message = '       force  '.bold.yellow;
@@ -97,8 +99,11 @@ function generate_scaffold () {
 					} else {
 						var message = '      create  '.bold.green;
 						create_file(src, des, file_path, message);
+						if (template_order == file_templates[line[1]].length - 1)
+							template_order = 0;
 					}
 				}
+
 				if (question) break;
 			} else {
 				var file_path = line[1];
@@ -138,7 +143,7 @@ function resumeGenerate(obj) {
 			template_order = 0;
 			file_order++;
 		} else {
-			if (template_order < obj.length) {
+			if (template_order < obj.length - 1) {
 				template_order++;
 			} else {
 				template_order = 0;
@@ -146,6 +151,7 @@ function resumeGenerate(obj) {
 			}
 		}
 	} else {
+		template_order = 0;
 		file_order++;
 	}
 	generate_scaffold();
