@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = CONFIG.database;
-
+%%require_modules%%
 var %%model_name%% = sequelize.define('%%model%%', {
 %%model_attrs%%
 }, {

@@ -36,18 +36,41 @@ module.exports = function() {
 
 	var model_attrs = "";
 	var migration_attrs = "";
+	var require_modules = "";
 
 	for (var i = 5; i < process.argv.length; i++) {
 		var attr_str = process.argv[i].split(':');
-		var attr_name = stringHelper.toTitleCase(attr_str[0]);
+		var attr_name = attr_str[0].toLowerCase();
+		var db_type = attr_str[1].toUpperCase();
+		if (db_type == 'REFERENCES') {
+			var module_name = stringHelper.toTitleCase(attr_name);
+			require_modules += "var "+module_name+" = require('./"+attr_name+".js');\n";
+			// model.js
+			model_attrs += '\t' + attr_name + '_id: {\n';
+			model_attrs += '\t\ttype: Sequelize.INTEGER,\n';
+			model_attrs += '\t\treferences: {\n';
+			model_attrs += '\t\t\tmodel: '+module_name+',\n';
+			model_attrs += "\t\t\tkey: 'id'\n";
+			model_attrs += '\t\t}\n';
+			model_attrs += '\t},\n';
 
-		// model.js
-		model_attrs += '\t' + attr_str[0] + ': {\n';
-		model_attrs += '\t\ttype: Sequelize.' + attr_str[1].toUpperCase() + ',\n';
-		model_attrs += '\t},\n';
-
-		// migration
-		migration_attrs += "\t\t\t" + attr_str[0] + ": DataTypes." + attr_str[1].toUpperCase() + ",\n";
+			// migration
+			migration_attrs += "\t\t\t" + attr_name + "_id: {\n";
+			migration_attrs += "\t\t\t\ttype: DataTypes.INTEGER,\n";
+			migration_attrs += "\t\t\t\treferences: {\n";
+			migration_attrs += "\t\t\t\t\tmodel: '"+attr_name+"',\n";
+			migration_attrs += "\t\t\t\t\tkey: 'id',\n";
+			migration_attrs += "\t\t\t\t}\n";
+			migration_attrs += "\t\t\t},\n";
+		} else {
+			// model.js
+			model_attrs += '\t' + attr_name + ': {\n';
+			model_attrs += '\t\ttype: Sequelize.' + db_type + ',\n';
+			model_attrs += '\t},\n';
+	
+			// migration
+			migration_attrs += "\t\t\t" + attr_name + ": DataTypes." + db_type + ",\n";
+		}
 	}
 
 	var file_templates = {
@@ -57,7 +80,8 @@ module.exports = function() {
 				info_render: {
 					model_name: model_name,
 					model_attrs: model_attrs,
-					model: model
+					model: model,
+					require_modules: require_modules
 				}
 			}
 		],
