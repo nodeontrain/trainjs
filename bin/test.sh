@@ -21,6 +21,7 @@ eval "$BASEDIR/bin/train_command.js generate controller StaticPages home help"
 
 cd /tmp/generate_model
 eval "$BASEDIR/bin/train_command.js generate model User name:string email:string"
+eval "$BASEDIR/bin/train_command.js generate model Micropost content:text user:references"
 
 cd /tmp/generate_service
 eval "$BASEDIR/bin/train_command.js generate service User"

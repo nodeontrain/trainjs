@@ -24,7 +24,6 @@ var fs = require('fs');
 var path = require('path');
 var inflection = require('inflection');
 var root_app = process.cwd();
-var stringHelper = require('../lib/helpers/string_helper.js');
 var migrationTime = require('../lib/helpers/migration_time.js');
 var train_generate = require('./train_generate.js');
 
@@ -43,13 +42,11 @@ module.exports = function() {
 		var attr_name = attr_str[0].toLowerCase();
 		var db_type = attr_str[1].toUpperCase();
 		if (db_type == 'REFERENCES') {
-			var module_name = stringHelper.toTitleCase(attr_name);
-			require_modules += "var "+module_name+" = require('./"+attr_name+".js');\n";
 			// model.js
 			model_attrs += '\t' + attr_name + '_id: {\n';
 			model_attrs += '\t\ttype: Sequelize.INTEGER,\n';
 			model_attrs += '\t\treferences: {\n';
-			model_attrs += '\t\t\tmodel: '+module_name+',\n';
+			model_attrs += "\t\t\tmodel: '"+attr_name+"',\n";
 			model_attrs += "\t\t\tkey: 'id'\n";
 			model_attrs += '\t\t}\n';
 			model_attrs += '\t},\n';
