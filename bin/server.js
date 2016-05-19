@@ -150,34 +150,43 @@ function runServer() {
 				});
 			}
 		} else {
-			var routes = global_v_init.routes;
-			var controllers = global_v_init.controllers;
-
-			var is_route = false;
-
-			for (var k in ROUTE_PATTERNS) {
-				var pattern = ROUTE_PATTERNS[k].pattern;
-				var method = ROUTE_PATTERNS[k].method;
-				var resource = ROUTE_PATTERNS[k].resource;
-				var action = ROUTE_PATTERNS[k].action;
-
-				if (pattern.matches(req.url) && method.toLowerCase() == req.method.toLowerCase()) {
-					var params = pattern.match(req.url);
-					req.params = params.namedParams;
-					try {
-						var class_object = new controllers[resource]();
-						beforeAction(req, res, next, class_object, action, 0);
-						is_route = true;
-						break;
-					} catch(e) {
-						console.log( 'Error: '.bold.red + e );
-						res.end();
+			file_path = path.join(ROOT_APP, '', url_path);
+			if (is_asset && fs.existsSync(file_path)) {
+				fs.readFile(file_path, function(err, page) {
+					res.writeHead(200, {'Content-Type': content_type});
+					res.write(page);
+					res.end();
+				});
+			} else {
+				var routes = global_v_init.routes;
+				var controllers = global_v_init.controllers;
+	
+				var is_route = false;
+	
+				for (var k in ROUTE_PATTERNS) {
+					var pattern = ROUTE_PATTERNS[k].pattern;
+					var method = ROUTE_PATTERNS[k].method;
+					var resource = ROUTE_PATTERNS[k].resource;
+					var action = ROUTE_PATTERNS[k].action;
+	
+					if (pattern.matches(req.url) && method.toLowerCase() == req.method.toLowerCase()) {
+						var params = pattern.match(req.url);
+						req.params = params.namedParams;
+						try {
+							var class_object = new controllers[resource]();
+							beforeAction(req, res, next, class_object, action, 0);
+							is_route = true;
+							break;
+						} catch(e) {
+							console.log( 'Error: '.bold.red + e );
+							res.end();
+						}
 					}
 				}
+	
+				if (!is_route)
+					next();
 			}
-
-			if (!is_route)
-				next();
 		}
 	});
 
@@ -200,4 +209,3 @@ if ( pre_run ) {
 } else {
 	runServer();
 }
-

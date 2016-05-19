@@ -1,7 +1,7 @@
 {
 	"name": "trainjs",
 	"description": "Web framework",
-	"version": "2.0.36",
+	"version": "2.0.37",
 	"author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
 	"bin": {
 		"trainjs": "./bin/train_command.js"
