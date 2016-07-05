@@ -115,7 +115,7 @@ function runServer() {
 				content_type = 'application/javascript';
 			}
 
-			if (content_type == 'image/webp' && /\.png$/.test(req.url)) {
+			if (/\.png$/.test(req.url)) {
 				content_type = 'image/png';
 			}
 		}
