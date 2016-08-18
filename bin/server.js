@@ -17,33 +17,33 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+	*/
 
 
-var fs = require('fs');
-var trainjs = require('trainjs');
-var http = require('http');
-var url = require('url');
-var exec = require('child_process').exec;
-var Fiber = require('fibers');
-var path = require('path');
+	var fs = require('fs');
+	var trainjs = require('trainjs');
+	var http = require('http');
+	var url = require('url');
+	var exec = require('child_process').exec;
+	var Fiber = require('fibers');
+	var path = require('path');
 
 
-var global_v_init = trainjs.initServer();
+	var global_v_init = trainjs.initServer();
 
-var pre_run_path = ROOT_APP + '/config/pre_run.js';
-var pre_run = fs.existsSync( pre_run_path );
+	var pre_run_path = ROOT_APP + '/config/pre_run.js';
+	var pre_run = fs.existsSync( pre_run_path );
 
-var app_config = require( ROOT_APP + '/config/application.js' );
-var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
+	var app_config = require( ROOT_APP + '/config/application.js' );
+	var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
 
 
-var app = require( ROOT_APP + '/app.js' );
+	var app = require( ROOT_APP + '/app.js' );
 
-var beforeAction = function(req, res, next, class_object, action, before_action_i) {
-	if (class_object['before_action']) {
-		var before_action = class_object['before_action'][before_action_i];
-		if (!before_action.only || before_action.only && before_action.only.indexOf(action) > -1) {
+	var beforeAction = function(req, res, next, class_object, action, before_action_i) {
+		if (class_object['before_action']) {
+			var before_action = class_object['before_action'][before_action_i];
+			if (!before_action.only || before_action.only && before_action.only.indexOf(action) > -1) {
 			if (class_object[before_action.action](req, res, next)) { //if res.end()
 				return;
 			}
@@ -151,24 +151,46 @@ function runServer() {
 			}
 		} else {
 			file_path = path.join(ROOT_APP, '', url_path);
-			if (is_asset && fs.existsSync(file_path)) {
-				fs.readFile(file_path, function(err, page) {
-					res.writeHead(200, {'Content-Type': content_type});
-					res.write(page);
-					res.end();
-				});
+			if (fs.existsSync(file_path)) {
+				try {
+					var stats = fs.lstatSync(file_path);
+					if (stats.isDirectory()) {
+						var index_file = file_path + '/index.html';
+						if (fs.existsSync(index_file)) {
+							fs.readFile(index_file, function(err, page) {
+								res.writeHead(200, {'Content-Type': 'text/html'});
+								res.write(page);
+								res.end();
+							});
+						} else {
+							res.end();
+						}
+					} else {
+						if (is_asset) {
+							fs.readFile(file_path, function(err, page) {
+								res.writeHead(200, {'Content-Type': content_type});
+								res.write(page);
+								res.end();
+							});
+						} else {
+							res.end();
+						}
+					}
+				}
+				catch (e) {
+					console.log(e);
+				}
 			} else {
 				var routes = global_v_init.routes;
 				var controllers = global_v_init.controllers;
-	
 				var is_route = false;
-	
+
 				for (var k in ROUTE_PATTERNS) {
 					var pattern = ROUTE_PATTERNS[k].pattern;
 					var method = ROUTE_PATTERNS[k].method;
 					var resource = ROUTE_PATTERNS[k].resource;
 					var action = ROUTE_PATTERNS[k].action;
-	
+
 					if (pattern.matches(req.url) && method.toLowerCase() == req.method.toLowerCase()) {
 						var params = pattern.match(req.url);
 						req.params = params.namedParams;
@@ -183,7 +205,7 @@ function runServer() {
 						}
 					}
 				}
-	
+
 				if (!is_route)
 					next();
 			}
