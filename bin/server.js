@@ -157,11 +157,16 @@ function runServer() {
 					if (stats.isDirectory()) {
 						var index_file = file_path + '/index.html';
 						if (fs.existsSync(index_file)) {
-							fs.readFile(index_file, function(err, page) {
-								res.writeHead(200, {'Content-Type': 'text/html'});
-								res.write(page);
+							if (url_path[url_path.length - 1] != '/') {
+								res.writeHead(301, {'Location': url_path + '/'});
 								res.end();
-							});
+							} else {
+								fs.readFile(index_file, function(err, page) {
+									res.writeHead(200, {'Content-Type': 'text/html'});
+									res.write(page);
+									res.end();
+								});
+							}
 						} else {
 							res.end();
 						}
