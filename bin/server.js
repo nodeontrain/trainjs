@@ -118,6 +118,10 @@ function runServer() {
 			if (/\.png$/.test(req.url)) {
 				content_type = 'image/png';
 			}
+
+			if (content_type == '*/*' && /\.jpg$/.test(req.url)) {
+				content_type = 'image/jpeg';
+			}
 		}
 
 		var url_path = req.url.split('?')[0];
