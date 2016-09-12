@@ -80,17 +80,6 @@ function runServer() {
 	});
 
 	var application = new ApplicationController();
-	app.use(function (req, res, next) {
-		try {
-			var Cookies = require( "cookies" );
-			if (!req.cookies)
-				req.cookies = new Cookies(req, res);
-			next();
-		} catch (ex) {
-			next();
-		}
-	});
-
 	app.use(application.before);
 	trainjs.newServer(app, global_v_init);
 
