@@ -1,7 +1,7 @@
 {
 	"name": "trainjs",
 	"description": "Web framework",
-	"version": "2.0.43",
+	"version": "2.1.0",
 	"author": "Dang Duy Thanh <thanhdd.it@gmail.com>",
 	"bin": {
 		"trainjs": "./bin/train_command.js"
@@ -37,6 +37,10 @@
 		"Node on train",
 		"Angular",
 		"Ruby on rails",
-		"Sequelize"
+		"Sequelize",
+		"Full Stack Development",
+		"Full Stack Developer",
+		"scaffold",
+		"connect"
 	]
 }
