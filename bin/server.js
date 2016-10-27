@@ -21,7 +21,7 @@
 
 
 	var fs = require('fs');
-	var trainjs = require('trainjs');
+	var trainjs = require('../lib/train.js');
 	var http = require('http');
 	var url = require('url');
 	var exec = require('child_process').exec;

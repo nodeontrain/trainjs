@@ -1,0 +1,14 @@
+{
+	"development": {
+		"dialect": "%%dialect%%",
+%%development_options%%
+	},
+	"test": {
+		"dialect": "%%dialect%%",
+%%test_options%%
+	},
+	"production": {
+		"dialect": "%%dialect%%",
+%%production_options%%
+	}
+}
