@@ -1,0 +1,23 @@
+{
+	"development": {
+		"dialect": "mysql",
+		"host": "localhost",
+		"database": "database_development",
+		"username": "username",
+		"password": "password"
+	},
+	"test": {
+		"dialect": "mysql",
+		"host": "localhost",
+		"database": "database_test",
+		"username": "username",
+		"password": "password"
+	},
+	"production": {
+		"dialect": "mysql",
+		"host": "localhost",
+		"database": "database_production",
+		"username": "username",
+		"password": "password"
+	}
+}

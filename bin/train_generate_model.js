@@ -101,18 +101,6 @@ module.exports = function() {
 		],
 	}
 
-	//--- Edit package.json ---//
-	var package_file = root_app + "/package.json";
-	var package_file_content = fs.readFileSync(package_file).toString();
-	if (package_file_content.indexOf('sequelize') < 0) {
-		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"sequelize": "*",');
-	}
-	if (package_file_content.indexOf('sqlite3') < 0) {
-		package_file_content = package_file_content.replace('"dependencies": {', '"dependencies": {\n\t\t"sqlite3": "*",');
-	}
-	fs.writeFileSync(package_file, package_file_content);
-	//--- Edit package.json ---//
-
 	var lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../');
 	var path_templ = lib + 'template/model';
 
