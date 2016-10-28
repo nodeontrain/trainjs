@@ -24,10 +24,13 @@ var path = require('path');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 
-module.exports = function (port) {
+module.exports = function () {
 	var path_server_ls = path.dirname(fs.realpathSync(__filename)) + '/server.js';
-	var lsc = spawn('node', [path_server_ls, port], { stdio: [0,1,2] });
-
+	var params = [path_server_ls];
+	for (var i = 3; i < process.argv.length; i++) {
+		params.push(process.argv[i]);
+	}
+	var lsc = spawn('node', params, { stdio: [0,1,2] });
 	lsc.on('exit', function (code) {
 		console.log('Error Code: ' + code);
 		console.log('Exiting');

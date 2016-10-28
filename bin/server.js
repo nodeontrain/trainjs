@@ -210,7 +210,15 @@ function runServer() {
 		}
 	});
 
-	var port = process.env.PORT || process.argv[2];
+	var port = '1337';
+	if (process.env.PORT) {
+		port = process.env.PORT;
+	} else {
+		var port_param_index = process.argv.indexOf("-p");
+		if ( port_param_index > -1 && process.argv[ port_param_index + 1 ] && isNormalInteger( process.argv[ port_param_index + 1 ] ) ) {
+			port = process.argv[ port_param_index + 1 ];
+		}
+	}
 
 	http.createServer(app).listen(port);
 	console.log('=> Server running at http://0.0.0.0:' + port + '\n=> Ctrl-C to shutdown server');
