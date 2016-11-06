@@ -17,33 +17,33 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	*/
+*/
 
 
-	var fs = require('fs');
-	var trainjs = require('../lib/train.js');
-	var http = require('http');
-	var url = require('url');
-	var exec = require('child_process').exec;
-	var Fiber = require('fibers');
-	var path = require('path');
+var fs = require('fs');
+var trainjs = require('../lib/train.js');
+var http = require('http');
+var url = require('url');
+var exec = require('child_process').exec;
+var Fiber = require('fibers');
+var path = require('path');
 
 
-	var global_v_init = trainjs.initServer();
+var global_v_init = trainjs.initServer();
 
-	var pre_run_path = ROOT_APP + '/config/pre_run.js';
-	var pre_run = fs.existsSync( pre_run_path );
+var pre_run_path = ROOT_APP + '/config/pre_run.js';
+var pre_run = fs.existsSync( pre_run_path );
 
-	var app_config = require( ROOT_APP + '/config/application.js' );
-	var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
+var app_config = require( ROOT_APP + '/config/application.js' );
+var ApplicationController = require( ROOT_APP + '/app/controllers/application_controller.js' );
 
 
-	var app = require( ROOT_APP + '/app.js' );
+var app = require( ROOT_APP + '/app.js' );
 
-	var beforeAction = function(req, res, next, class_object, action, before_action_i) {
-		if (class_object['before_action']) {
-			var before_action = class_object['before_action'][before_action_i];
-			if (!before_action.only || before_action.only && before_action.only.indexOf(action) > -1) {
+var beforeAction = function(req, res, next, class_object, action, before_action_i) {
+	if (class_object['before_action']) {
+		var before_action = class_object['before_action'][before_action_i];
+		if (!before_action.only || before_action.only && before_action.only.indexOf(action) > -1) {
 			if (class_object[before_action.action](req, res, next)) { //if res.end()
 				return;
 			}
