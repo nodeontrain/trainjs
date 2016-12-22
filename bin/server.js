@@ -62,11 +62,6 @@ var beforeAction = function(req, res, next, class_object, action, before_action_
 	}
 };
 
-function isNormalInteger(str) {
-	var n = ~~Number(str);
-	return String(n) === str && n >= 0;
-}
-
 function runServer() {
 	app.use(function (req, res, next) {
 		Fiber(function() {
@@ -220,6 +215,10 @@ function runServer() {
 		port = process.env.PORT;
 	} else {
 		var port_param_index = process.argv.indexOf("-p");
+		var isNormalInteger = function (str) {
+			var n = ~~Number(str);
+			return String(n) === str && n >= 0;
+		};
 		if ( port_param_index > -1 && process.argv[ port_param_index + 1 ] && isNormalInteger( process.argv[ port_param_index + 1 ] ) ) {
 			port = process.argv[ port_param_index + 1 ];
 		}
