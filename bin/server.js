@@ -62,6 +62,11 @@ var beforeAction = function(req, res, next, class_object, action, before_action_
 	}
 };
 
+function isNormalInteger(str) {
+	var n = ~~Number(str);
+	return String(n) === str && n >= 0;
+}
+
 function runServer() {
 	app.use(function (req, res, next) {
 		Fiber(function() {

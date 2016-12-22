@@ -36,11 +36,6 @@ function checkinfo () {
 	info_param.node_version = process.version.substr(1);
 }
 
-function isNormalInteger(str) {
-	var n = ~~Number(str);
-	return String(n) === str && n >= 0;
-}
-
 Fiber(function() {
 	checkinfo();
 	if (process.argv[2] == "server" || process.argv[2] == "s") {
