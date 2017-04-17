@@ -24,7 +24,6 @@
 
 var path = require('path');
 var fs = require('fs');
-var child_process = require('child_process');
 var Fiber = require('fibers');
 
 TRAINJS_LIB_PATH = path.join(path.dirname(fs.realpathSync(__filename)), '../');
