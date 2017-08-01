@@ -69,8 +69,9 @@ function runServer() {
 			req.query = url_parts.query;
 
 			if ( app_config.cors ) {
-				res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
 				res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+				if (req.headers.origin)
+					res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
 				if (req.headers['access-control-request-headers'])
 					res.setHeader("Access-Control-Allow-Headers", req.headers['access-control-request-headers']);
 			}
