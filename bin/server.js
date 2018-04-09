@@ -76,6 +76,9 @@ function runServer() {
 					res.setHeader("Access-Control-Allow-Headers", req.headers['access-control-request-headers']);
 			}
 
+			if (app_config.credentials)
+				res.setHeader("Access-Control-Allow-Credentials", "true");
+
 			if ( req.method === 'OPTIONS' ) {
 				res.end();
 			} else {
