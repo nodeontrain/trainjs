@@ -8,7 +8,7 @@
 		"sequelize": "*",
 		"body-parser": "*",
 		"connect": "*",
-		"angular": "1.5.0",
+		"angular": "1.8.3",
 		"angular-ui-router": "0.2.18"
 	}
 }
